@@ -215,6 +215,7 @@
                     <button class="external-btn" id="btnPleco">Từ điển Pleco (web)</button>
                     <button class="external-btn" id="btnForvo">Forvo (Phát âm)</button>
                     <button class="external-btn" id="btnGoogleImages">Google Hình ảnh</button>
+                    <button class="external-btn" id="btnYouglish">YouGlish (Phát âm thực tế)</button>
                 </div>
             </div>
 
@@ -297,6 +298,7 @@
         let isSpeakingFullDialogue = false;
         let recognition; // Global variable for SpeechRecognition instance
         let isRecording = false; // To track recording state
+        const loopPlaybackState = { active: false, text: '', button: null };
 
         // --- DOM Element References ---
         const vocabularyInput = document.getElementById('vocabularyInput');
@@ -310,6 +312,7 @@
 
         // --- UI Helper Functions ---
         function hideAllSections() {
+            stopLoopPlayback();
             if (speechSynthesis.speaking || speechSynthesis.pending) {
                 speechSynthesis.cancel();
             }
@@ -405,7 +408,8 @@
                 googleTranslate: `https://translate.google.com/?sl=zh-CN&tl=vi&text=${encodeURIComponent(vocabulary)}&op=translate`,
                 pleco: `https://www.pleco.com/`, // Pleco is an app, linking to its homepage.
                 forvo: `https://forvo.com/search/${encodeURIComponent(vocabulary)}/zh/`,
-                googleImages: `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(vocabulary)}`
+                googleImages: `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(vocabulary)}`,
+                youglish: `https://youglish.com/pronounce/${encodeURIComponent(vocabulary)}/chinese`
             };
             if (urls[type]) {
                 window.open(urls[type], '_blank');
@@ -423,7 +427,7 @@
              }
              // IMPORTANT: API Key is required for this to work.
              // Replace "" with your actual Google AI Studio API key.
-             const apiKey = "AIzaSyAQv5lPU_OTVN_kCSM-V1cqTJBoSwlYr9E";
+             const apiKey = "AIzaSyDCEJ4sBmgnIZPGkCnm59HtZro8nd5i3tw";
              const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
              
              const response = await fetch(apiUrl, {
@@ -475,6 +479,13 @@
                 } else {
                     const { prompt, schema } = promptGenerator(featureInput);
                     const data = await callGemini(prompt, schema);
+                    // Debug logging for explanation feature
+                    if (featureKey === 'explanation') {
+                        console.log('Explanation API Response:', data);
+                        console.log('Has synonyms:', !!data.synonyms, data.synonyms);
+                        console.log('Has antonyms:', !!data.antonyms, data.antonyms);
+                        console.log('Has collocations:', !!data.collocations, data.collocations);
+                    }
                     renderer(data, content, headerText, featureInput);
                 }
             } catch (error) {
@@ -550,11 +561,164 @@
                     </div>`).join('');
             },
             explanation: (data, el, headerText, originalInput) => {
+                // Ensure data has all required fields with defaults
+                if (!data) {
+                    console.error('Explanation data is null or undefined');
+                    data = {};
+                }
+                data.synonyms = data.synonyms || [];
+                data.antonyms = data.antonyms || [];
+                data.collocations = data.collocations || [];
+                data.memory_tips = data.memory_tips || [];
+                
+                console.log('Rendering explanation with data:', {
+                    hasSynonyms: data.synonyms?.length || 0,
+                    hasAntonyms: data.antonyms?.length || 0,
+                    hasCollocations: data.collocations?.length || 0,
+                    hasMemoryTips: data.memory_tips?.length || 0
+                });
+                
+                const renderStars = (rating) => {
+                    const fullStars = Math.round(rating);
+                    const emptyStars = 5 - fullStars;
+                    return '★'.repeat(fullStars) + '☆'.repeat(emptyStars);
+                };
+                
+                const renderWordList = (items, title, icon, alwaysShow = false) => {
+                    if (!items || !Array.isArray(items) || items.length === 0) {
+                        if (alwaysShow) {
+                            return `
+                                <div class="info-card">
+                                    <h3 class="card-title">${icon} ${title}</h3>
+                                    <div class="space-y-3">
+                                        <p class="text-slate-500 dark:text-slate-400 italic text-center py-4">Chưa có dữ liệu</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        return '';
+                    }
+                    return `
+                        <div class="info-card">
+                            <h3 class="card-title">${icon} ${title}</h3>
+                            <div class="space-y-3">
+                                ${items.map(item => {
+                                    const escapedPinyin = String(item.pinyin || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                    const escapedHanzi = String(item.hanzi || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                    const escapedMeaning = String(item.meaning || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                    const rating = Number(item.rating) || 0;
+                                    return `
+                                        <div class="flex items-center justify-between py-2 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
+                                            <div class="flex-1">
+                                                <p class="font-mono text-slate-800 dark:text-slate-200">${escapedPinyin}</p>
+                                                <p class="text-slate-600 dark:text-slate-400">${escapedHanzi}</p>
+                                                <p class="text-sm text-slate-500 dark:text-slate-500 italic">${escapedMeaning}</p>
+                                            </div>
+                                            <div class="ml-4 text-yellow-500 text-lg" title="Đánh giá: ${rating}/5">
+                                                ${renderStars(rating)}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+                };
+                
+                const memoryTipsSection = data.memory_tips && Array.isArray(data.memory_tips) && data.memory_tips.length > 0 ? `
+                    <div class="info-card">
+                        <h3 class="card-title">💡 Mẹo để dễ nhớ</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            ${data.memory_tips.map(tip => `<li class="text-slate-700 dark:text-slate-300">${String(tip).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : '';
+                
+                const synonymsSection = renderWordList(data.synonyms, 'Từ đồng nghĩa', '👍', true);
+                const antonymsSection = renderWordList(data.antonyms, 'Từ trái nghĩa', '👎', true);
+                
+                // Render collocations as a table, sorted by rating (highest first)
+                const collocationsSection = (() => {
+                    if (!data.collocations || !Array.isArray(data.collocations) || data.collocations.length === 0) {
+                        return `
+                            <div class="info-card">
+                                <h3 class="card-title">🤝 Cách dùng phổ biến (Collocations)</h3>
+                                <div class="table-container">
+                                    <p class="text-slate-500 dark:text-slate-400 italic text-center py-4">Chưa có dữ liệu</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Sort by rating descending
+                    const sortedCollocations = [...data.collocations].sort((a, b) => {
+                        const ratingA = Number(a.rating) || 0;
+                        const ratingB = Number(b.rating) || 0;
+                        return ratingB - ratingA;
+                    });
+                    
+                    return `
+                        <div class="info-card">
+                            <h3 class="card-title">🤝 Cách dùng phổ biến (Collocations)</h3>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Pinyin</th>
+                                            <th>Chữ Hán</th>
+                                            <th>Nghĩa</th>
+                                            <th>Mức độ phổ biến</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${sortedCollocations.map(item => {
+                                            const escapedPinyin = String(item.pinyin || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            const escapedHanzi = String(item.hanzi || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            const escapedMeaning = String(item.meaning || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                                            const rating = Number(item.rating) || 0;
+                                            return `
+                                                <tr>
+                                                    <td class="font-mono">${escapedPinyin}</td>
+                                                    <td>${escapedHanzi}</td>
+                                                    <td>${escapedMeaning}</td>
+                                                    <td class="text-yellow-500 text-lg" title="Đánh giá: ${rating}/5">${renderStars(rating)}</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                })();
+                
+                const speakTarget = (data.hanzi || data.hanzi_word || originalInput || '').trim();
+                const speakButtonHtml = speakTarget ? `
+                    <button class="primary-btn flex-shrink-0" onclick="speakText('${speakTarget.replace(/'/g, "\\'")}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9v6h4l5 4V5l-5 4H5z"></path><line x1="16" y1="8" x2="16" y2="16"></line><line x1="20" y1="5" x2="20" y2="19"></line></svg>
+                        Nghe cụm từ
+                    </button>
+                ` : '';
+                const loopButtonHtml = speakTarget ? `
+                    <button class="feature-btn justify-center" data-loop-default="🔁 Nghe liên tục" data-loop-stop="⏹ Dừng lặp" data-loop-state="stopped" onclick="toggleLoopPlayback(this, '${speakTarget.replace(/'/g, "\\'")}')">
+                        🔁 Nghe liên tục
+                    </button>
+                ` : '';
+                const audioControlsHtml = speakTarget ? `
+                    <div class="flex flex-col gap-2 w-full md:w-auto">
+                        ${speakButtonHtml}
+                        ${loopButtonHtml}
+                    </div>
+                ` : '';
+                
                 el.innerHTML = `
                     <h2 class="section-header">📚 ${headerText}: ${originalInput}</h2>
-                     <div class="info-card">
+                    <div class="info-card">
                         <h3 class="card-title">📖 Giải thích chung</h3>
-                        <p>${data.explanation}</p>
+                        <div class="flex flex-col md:flex-row md:items-center gap-4">
+                            <p class="flex-1">${data.explanation}</p>
+                            ${audioControlsHtml}
+                        </div>
                     </div>
                     <div class="info-card">
                         <h3 class="card-title">🔍 Phân tích từng thành phần</h3>
@@ -579,6 +743,12 @@
                         </table>
                         </div>
                     </div>
+                    ${memoryTipsSection}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${synonymsSection}
+                        ${antonymsSection}
+                    </div>
+                    ${collocationsSection}
                     <div class="info-card">
                         <h3 class="card-title">⚠️ Lưu ý cách dùng</h3>
                         <p>${data.usage_notes}</p>
@@ -1127,8 +1297,18 @@
             exercise: (input) => ({ prompt: `Tạo 10 câu bài tập điền vào chỗ trống cho từ/chủ đề tiếng Trung "${input}". Mỗi câu, cung cấp: câu tiếng Hán đầy đủ, câu pinyin với một từ bị thiếu thay bằng "____", pinyin của từ đúng, 4 lựa chọn pinyin ngẫu nhiên (bao gồm đáp án đúng), và bản dịch tiếng Việt. Trả về mảng JSON với các thuộc tính: "id", "hanzi_sentence", "pinyin_with_blank", "correct_word_pinyin", "options", "translation".`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { id: { type: "NUMBER" }, hanzi_sentence: { type: "STRING" }, pinyin_with_blank: { type: "STRING" }, correct_word_pinyin: { type: "STRING" }, options: { type: "ARRAY", items: { type: "STRING" } }, translation: { type: "STRING" } }, required: ["id", "hanzi_sentence", "pinyin_with_blank", "correct_word_pinyin", "options", "translation"] } } }),
             listeningFillInTheBlank: (input) => ({ prompt: `Tạo 10 câu bài tập nghe và điền từ tiếng Trung cho chủ đề "${input}". Mỗi câu có: câu tiếng Hán đầy đủ để phát âm, câu pinyin với một từ bị thiếu thay bằng "____", pinyin của từ đúng, 4 lựa chọn pinyin (bao gồm đáp án đúng), và bản dịch tiếng Việt. Trả về mảng JSON với thuộc tính: "id", "hanzi_sentence", "pinyin_with_blank", "correct_word_pinyin", "options", "translation".`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { id: { type: "NUMBER" }, hanzi_sentence: { type: "STRING" }, pinyin_with_blank: { type: "STRING" }, correct_word_pinyin: { type: "STRING" }, options: { type: "ARRAY", items: { type: "STRING" } }, translation: { type: "STRING" } }, required: ["id", "hanzi_sentence", "pinyin_with_blank", "correct_word_pinyin", "options", "translation"] } } }),
             explanation: (input) => ({
-                prompt: `Giải thích ngắn gọn từ vựng hoặc ngữ pháp tiếng Trung cho "${input}". Trả về JSON có các khóa: 'explanation' (giải thích chung bằng tiếng Việt, tối đa 2 câu), 'components' (mảng các đối tượng cho mỗi ký tự, mỗi đối tượng có 'pinyin', 'hanzi', và 'meaning' - nghĩa gốc), và 'usage_notes' (lưu ý cách dùng bằng tiếng Việt, tối đa 2 câu). Giữ các chuỗi ngắn gọn và hợp lệ JSON.`,
-                schema: { type: "OBJECT", properties: { explanation: { "type": "STRING" }, components: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" } }, required: ["pinyin", "hanzi", "meaning"] } }, usage_notes: { "type": "STRING" } }, required: ["explanation", "components", "usage_notes"] }
+                prompt: `Giải thích từ vựng hoặc ngữ pháp tiếng Trung cho "${input}". BẮT BUỘC phải trả về JSON với TẤT CẢ các khóa sau (không được thiếu bất kỳ khóa nào):
+
+1. 'explanation': Giải thích chung bằng tiếng Việt (tối đa 2 câu)
+2. 'components': Mảng các đối tượng cho mỗi ký tự, mỗi đối tượng có 'pinyin', 'hanzi', và 'meaning' (nghĩa gốc)
+3. 'usage_notes': Lưu ý cách dùng bằng tiếng Việt (tối đa 2 câu)
+4. 'memory_tips': Mảng các mẹo để dễ nhớ bằng tiếng Việt (mỗi mẹo là một chuỗi ngắn gọn)
+5. 'synonyms': Mảng các từ đồng nghĩa (ít nhất 2-3 từ), mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
+6. 'antonyms': Mảng các từ trái nghĩa (ít nhất 1-2 từ nếu có, nếu không có từ trái nghĩa phù hợp thì trả về mảng rỗng []), mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
+7. 'collocations': Mảng các cụm từ phổ biến thường đi chung với từ này (ít nhất 3-5 cụm từ), sắp xếp theo độ phổ biến từ cao xuống thấp, mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
+
+QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi một số mảng có thể rỗng. Giữ các chuỗi ngắn gọn và đảm bảo JSON hợp lệ.`,
+                schema: { type: "OBJECT", properties: { explanation: { "type": "STRING" }, components: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" } }, required: ["pinyin", "hanzi", "meaning"] } }, usage_notes: { "type": "STRING" }, memory_tips: { type: "ARRAY", items: { type: "STRING" } }, synonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, antonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, collocations: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } } }, required: ["explanation", "components", "usage_notes", "synonyms", "antonyms", "collocations", "memory_tips"] }
             }),
             correction: (input) => ({ prompt: `Sửa lỗi câu Pinyin sau: "${input}". Hãy đoán chữ Hán tương ứng, kiểm tra ngữ pháp, sau đó cung cấp pinyin gốc, pinyin đã sửa, danh sách các thay đổi (giải thích bằng TIẾNG VIỆT), và bản dịch tiếng Việt của câu đã sửa. Trả về JSON với khóa: "original_pinyin", "corrected_pinyin", "changes" (mảng chuỗi), "translation".`, schema: { type: "OBJECT", properties: { original_pinyin: { type: "STRING" }, corrected_pinyin: { type: "STRING" }, changes: { type: "ARRAY", items: { type: "STRING" } }, translation: { type: "STRING" } }, required: ["original_pinyin", "corrected_pinyin", "changes", "translation"] } }),
             dialogue: (input) => ({ prompt: `Tạo đoạn hội thoại tiếng Trung về chủ đề "${input}" giữa hai nhân vật (ví dụ: A và B). Cung cấp tên nhân vật, lời thoại chữ Hán, pinyin và bản dịch tiếng Việt cho mỗi dòng. Trả về JSON có khóa: "characters" (mảng 2 tên), "dialogue" (mảng các đối tượng có khóa "character", "hanzi", "pinyin", "vietnamese").`, schema: { type: "OBJECT", properties: { characters: {type: "ARRAY", items: {type: "STRING"}}, dialogue: { type: "ARRAY", items: { type: "OBJECT", properties: { character: { type: "STRING" }, hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["character", "hanzi", "pinyin", "vietnamese"] } } }, required: ["characters", "dialogue"] } }),
@@ -1238,26 +1418,32 @@
         }
         
         // --- Audio Player & Speech Recognition Logic ---
+        function createChineseUtterance(textInHanzi, { showError = true } = {}) {
+            const utterance = new SpeechSynthesisUtterance(textInHanzi);
+            const voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('zh'));
+            if (voices.length === 0) {
+                if (showError) {
+                    showMessage('Không tìm thấy giọng đọc Tiếng Trung trên trình duyệt này.', 'error');
+                }
+                return null;
+            }
+            utterance.voice = voices.find(v => v.name.includes('Google') && v.lang === 'zh-CN') || voices.find(v => v.lang === 'zh-CN') || voices[0];
+            utterance.lang = 'zh-CN';
+            utterance.rate = 0.9;
+            return utterance;
+        }
+
         function speakText(textInHanzi) {
             if (!('speechSynthesis' in window)) {
                 showMessage('Trình duyệt không hỗ trợ phát âm thanh.', 'error');
                 return;
             }
+            stopLoopPlayback();
             if (speechSynthesis.speaking && !isSpeakingFullDialogue) {
                 speechSynthesis.cancel();
             }
-
-            const utterance = new SpeechSynthesisUtterance(textInHanzi);
-            const voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('zh'));
-            if (voices.length > 0) {
-                utterance.voice = voices.find(v => v.name.includes('Google') && v.lang === 'zh-CN') || voices.find(v => v.lang === 'zh-CN') || voices[0];
-                utterance.lang = 'zh-CN';
-                utterance.rate = 0.9;
-            } else {
-                 showMessage('Không tìm thấy giọng đọc Tiếng Trung trên trình duyệt này.', 'error');
-                 return;
-            }
-            
+            const utterance = createChineseUtterance(textInHanzi);
+            if (!utterance) return;
             utterance.onerror = (event) => console.error("Lỗi phát âm thanh:", event);
             speechSynthesis.speak(utterance);
         }
@@ -1265,12 +1451,8 @@
         function playQuestionAudio(button, textInHanzi) {
              if (!('speechSynthesis' in window)) return;
              if (speechSynthesis.speaking) speechSynthesis.cancel();
-             const utterance = new SpeechSynthesisUtterance(textInHanzi);
-             const voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('zh'));
-             if (voices.length > 0) {
-                utterance.voice = voices.find(v => v.name.includes('Google') && v.lang === 'zh-CN') || voices.find(v => v.lang === 'zh-CN') || voices[0];
-                utterance.lang = 'zh-CN';
-             } else { return; }
+             const utterance = createChineseUtterance(textInHanzi);
+             if (!utterance) return;
             
             const originalIconSVG = button.innerHTML;
             button.innerHTML = `<div class="spinning-loader"></div>`;
@@ -1278,6 +1460,66 @@
             utterance.onend = () => { button.innerHTML = originalIconSVG; button.disabled = false; };
             utterance.onerror = (e) => { button.innerHTML = originalIconSVG; button.disabled = false; console.error("Lỗi phát âm:", e); };
             speechSynthesis.speak(utterance);
+        }
+
+        function toggleLoopPlayback(button, textInHanzi) {
+            if (!textInHanzi) return;
+            if (!('speechSynthesis' in window)) {
+                showMessage('Trình duyệt không hỗ trợ phát âm thanh.', 'error');
+                return;
+            }
+            if (loopPlaybackState.active && loopPlaybackState.button === button) {
+                stopLoopPlayback();
+                return;
+            }
+            startLoopPlayback(button, textInHanzi);
+        }
+
+        function startLoopPlayback(button, textInHanzi) {
+            stopLoopPlayback();
+            loopPlaybackState.active = true;
+            loopPlaybackState.text = textInHanzi;
+            loopPlaybackState.button = button;
+            if (!button.dataset.loopDefault) {
+                button.dataset.loopDefault = button.innerHTML;
+            }
+            button.dataset.loopState = 'playing';
+            button.innerHTML = button.dataset.loopStop || '⏹ Dừng lặp';
+            playLoopUtterance();
+        }
+
+        function playLoopUtterance() {
+            if (!loopPlaybackState.active) return;
+            const utterance = createChineseUtterance(loopPlaybackState.text, { showError: !loopPlaybackState.button });
+            if (!utterance) {
+                stopLoopPlayback();
+                return;
+            }
+            utterance.onend = () => {
+                if (loopPlaybackState.active) {
+                    setTimeout(playLoopUtterance, 250);
+                }
+            };
+            utterance.onerror = (err) => {
+                console.error('Loop playback error:', err);
+                stopLoopPlayback();
+            };
+            speechSynthesis.speak(utterance);
+        }
+
+        function stopLoopPlayback() {
+            if (loopPlaybackState.active && 'speechSynthesis' in window) {
+                speechSynthesis.cancel();
+            }
+            if (loopPlaybackState.button) {
+                const btn = loopPlaybackState.button;
+                const defaultHtml = btn.dataset.loopDefault || '🔁 Nghe liên tục';
+                btn.innerHTML = defaultHtml;
+                btn.dataset.loopState = 'stopped';
+            }
+            loopPlaybackState.active = false;
+            loopPlaybackState.text = '';
+            loopPlaybackState.button = null;
         }
         
         function setupAudioPlayer(scriptInHanzi, container) {
@@ -1574,6 +1816,7 @@
             document.getElementById('btnPleco').addEventListener('click', () => openLink('pleco'));
             document.getElementById('btnForvo').addEventListener('click', () => openLink('forvo'));
             document.getElementById('btnGoogleImages').addEventListener('click', () => openLink('googleImages'));
+            document.getElementById('btnYouglish').addEventListener('click', () => openLink('youglish'));
 
             // Modals
             closeCorrectionModalBtn.addEventListener('click', () => { correctionModal.style.display = 'none'; });
