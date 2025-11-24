@@ -629,7 +629,7 @@
                     <div class="info-card">
                         <h3 class="card-title">💡 Mẹo để dễ nhớ</h3>
                         <ul class="list-disc list-inside space-y-2">
-                            ${data.memory_tips.map(tip => `<li class="text-slate-700 dark:text-slate-300">${String(tip).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}
+                            ${data.memory_tips.map(tip => `<li class="text-slate-700 dark:text-white">${String(tip).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}
                         </ul>
                     </div>
                 ` : '';
@@ -1300,7 +1300,7 @@
             explanation: (input) => ({
                 prompt: `Giải thích từ vựng hoặc ngữ pháp tiếng Trung cho "${input}". BẮT BUỘC phải trả về JSON với TẤT CẢ các khóa sau (không được thiếu bất kỳ khóa nào):
 
-1. 'explanation': Giải thích chung bằng tiếng Việt (tối đa 2 câu)
+1. 'explanation': Giải thích chung bằng tiếng Việt (tối đa 2 câu), nếu người dùng nhập tiếng việt thì dịch sang tiếng trung và bao gồm cả piyin
 2. 'components': Mảng các đối tượng cho mỗi ký tự, mỗi đối tượng có 'pinyin', 'hanzi', và 'meaning' (nghĩa gốc)
 3. 'usage_notes': Lưu ý cách dùng bằng tiếng Việt (tối đa 2 câu)
 4. 'memory_tips': Mảng các mẹo để dễ nhớ bằng tiếng Việt (mỗi mẹo là một chuỗi ngắn gọn)
@@ -1324,7 +1324,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             speakingPractice: (input) => ({ prompt: `Dựa vào chủ đề hoặc câu tiếng Việt "${input}", hãy tạo một câu tiếng Việt tương đương hoặc liên quan để người dùng dịch và nói bằng tiếng Trung. Sau đó, cung cấp bản dịch tiếng Trung gợi ý cho câu đó. Trả về một đối tượng JSON với các khóa: "vietnamese_sentence", "hanzi_suggestion", và "pinyin_suggestion".`, schema: { type: "OBJECT", properties: { vietnamese_sentence: { type: "STRING" }, hanzi_suggestion: { type: "STRING" }, pinyin_suggestion: { type: "STRING" } }, required: ["vietnamese_sentence", "hanzi_suggestion", "pinyin_suggestion"] } }),
             pinyinPractice: (input) => ({ prompt: `Dựa vào chủ đề "${input}", hãy tạo một câu tiếng Việt đơn giản và cung cấp bản dịch tiếng Trung của nó. Trả về một đối tượng JSON với các khóa: "vietnamese_sentence", "hanzi_suggestion", "pinyin_suggestion".`, schema: { type: "OBJECT", properties: { vietnamese_sentence: { type: "STRING" }, hanzi_suggestion: { type: "STRING" }, pinyin_suggestion: { type: "STRING" } }, required: ["vietnamese_sentence", "hanzi_suggestion", "pinyin_suggestion"] } }),
             checkPinyin: (vietnameseSentence, userPinyin, correctPinyin) => ({ prompt: `Câu gốc tiếng Việt là: "${vietnameseSentence}". Người dùng đã gõ pinyin là: "${userPinyin}". Pinyin đúng gợi ý là: "${correctPinyin}". Hãy kiểm tra xem pinyin người dùng gõ có đúng không (cho phép cả pinyin có dấu và không dấu dạng số). Nếu sai, hãy đưa ra phản hồi ngắn gọn bằng tiếng Việt. Trả về JSON có khóa: "is_correct" (boolean), "corrected_pinyin" (chuỗi pinyin đúng), "feedback" (chuỗi nhận xét).`, schema: { type: "OBJECT", properties: { is_correct: {type: "BOOLEAN"}, corrected_pinyin: { type: "STRING" }, feedback: { type: "STRING" } }, required: ["is_correct", "corrected_pinyin", "feedback"] } }),
-            comparison: (input) => ({ prompt: `So sánh các từ Pinyin sau: "${input}". Đối với mỗi từ, giải thích sắc thái ý nghĩa và ngữ cảnh sử dụng khác nhau của từng từ, thanh điệu, cách dùng bằng tiếng Việt, kèm theo một câu ví dụ (cả Hán tự, pinyin và bản dịch tiếng Việt). Trả về mảng JSON, mỗi đối tượng có khóa: "pinyin", "explanation", "example_hanzi", "example_pinyin", "example_vietnamese".`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, explanation: { type: "STRING" }, example_hanzi: { type: "STRING" }, example_pinyin: { type: "STRING" }, example_vietnamese: { type: "STRING" } }, required: ["pinyin", "explanation", "example_hanzi", "example_pinyin", "example_vietnamese"] } } }),
+            comparison: (input) => ({ prompt: `So sánh các từ Pinyin sau: "${input}". Đối với mỗi từ, giải thích sắc thái ý nghĩa khác nhau và ngữ cảnh sử dụng khác nhau của từng từ, cách dùng bằng tiếng Việt, kèm theo một câu ví dụ (cả Hán tự, pinyin và bản dịch tiếng Việt). Trả về mảng JSON, mỗi đối tượng có khóa: "pinyin", "explanation", "example_hanzi", "example_pinyin", "example_vietnamese".`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, explanation: { type: "STRING" }, example_hanzi: { type: "STRING" }, example_pinyin: { type: "STRING" }, example_vietnamese: { type: "STRING" } }, required: ["pinyin", "explanation", "example_hanzi", "example_pinyin", "example_vietnamese"] } } }),
             toneAnalysis: (input) => ({ prompt: `Phân tích thanh điệu của câu Pinyin sau: "${input}". Cung cấp giải thích chung bằng tiếng Việt. Sau đó, liệt kê chi tiết từng âm tiết với số thanh điệu, ký hiệu và mô tả. Trả về JSON có khóa: "original_pinyin", "explanation", "tones" (mảng các đối tượng có "syllable", "tone_number", "mark", "description").`, schema: { type: "OBJECT", properties: { original_pinyin: { type: "STRING" }, explanation: { type: "STRING" }, tones: { type: "ARRAY", items: { type: "OBJECT", properties: { syllable: { type: "STRING" }, tone_number: { type: "NUMBER" }, mark: { type: "STRING" }, description: { type: "STRING" } } } } }, required: ["original_pinyin", "explanation", "tones"] } }),
             situationalSentences: (input) => ({ prompt: `Tạo 3 câu tiếng Trung hữu ích cho tình huống: "${input}". Với mỗi câu, cung cấp chữ Hán, pinyin và bản dịch tiếng Việt. Trả về JSON có khóa 'situation' và 'sentences' (mảng đối tượng có 'hanzi', 'pinyin', 'vietnamese').`, schema: { type: "OBJECT", properties: { situation: { type: "STRING" }, sentences: { type: "ARRAY", items: { type: "OBJECT", properties: { hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["hanzi", "pinyin", "vietnamese"] } } }, required: ["situation", "sentences"] } }),
             translateViToZh: (input) => ({ 
@@ -1826,4 +1826,3 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
     </script>
 </body>
 </html>
-
