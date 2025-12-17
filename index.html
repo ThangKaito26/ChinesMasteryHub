@@ -1,132 +1,1050 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chinese Mastery Hub - Giao diện mới</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --primary: #d946ef; /* Fuchsia-500 */
-            --primary-hover: #c026d3; /* Fuchsia-600 */
-            --primary-light: #fae8ff; /* Fuchsia-100 */
-            --secondary: #db2777; /* Pink-600 */
-            --text-primary: #1e293b; /* Slate-800 */
-            --text-secondary: #475569; /* Slate-600 */
+            --primary: #d946ef;
+            /* Fuchsia-500 */
+            --primary-hover: #c026d3;
+            /* Fuchsia-600 */
+            --primary-light: #fae8ff;
+            /* Fuchsia-100 */
+            --secondary: #db2777;
+            /* Pink-600 */
+            --text-primary: #1e293b;
+            /* Slate-800 */
+            --text-secondary: #475569;
+            /* Slate-600 */
             --surface: #ffffff;
-            --surface-alt: #f1f5f9; /* Slate-100 */
-            --border: #e2e8f0; /* Slate-200 */
+            --surface-alt: #f1f5f9;
+            /* Slate-100 */
+            --border: #e2e8f0;
+            /* Slate-200 */
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
 
         html.dark {
-            --primary: #e879f9; /* Fuchsia-400 */
-            --primary-hover: #d946ef; /* Fuchsia-500 */
-            --text-primary: #f1f5f9; /* Slate-100 */
-            --text-secondary: #94a3b8; /* Slate-400 */
-            --surface: #1e293b; /* Slate-800 */
-            --surface-alt: #334155; /* Slate-700 */
-            --border: #475569; /* Slate-600 */
+            --primary: #e879f9;
+            /* Fuchsia-400 */
+            --primary-hover: #d946ef;
+            /* Fuchsia-500 */
+            --text-primary: #f1f5f9;
+            /* Slate-100 */
+            --text-secondary: #94a3b8;
+            /* Slate-400 */
+            --surface: #1e293b;
+            /* Slate-800 */
+            --surface-alt: #334155;
+            /* Slate-700 */
+            --border: #475569;
+            /* Slate-600 */
         }
-        
+
         html.dark body {
-            background-color: #0f172a; /* Slate-900 */
+            background-color: #0f172a;
+            /* Slate-900 */
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
-        
+
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
-            background-color: #f8fafc; /* Slate-50 */
+            background-color: #f8fafc;
+            /* Slate-50 */
             color: var(--text-primary);
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             background-attachment: fixed;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        .main-container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; }
-        .header { text-align: center; margin-bottom: 2rem; }
-        .header h1 { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; }
-        .header h1 span { background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header p { font-size: 1.125rem; color: var(--text-secondary); margin-top: 0.5rem; }
-        .lookup-card { background-color: var(--surface); border-radius: 1.5rem; padding: 2rem; box-shadow: var(--shadow-lg); margin-bottom: 2rem; transition: background-color 0.3s, border-color 0.3s; }
-        .input-group { display: flex; gap: 0.5rem; border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.5rem; transition: all 0.2s ease; }
-        .input-group:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.1); }
-        .main-input { flex-grow: 1; border: none; outline: none; padding: 0.5rem 1rem; font-size: 1rem; background: transparent; color: var(--text-primary); }
-        .icon-btn { background-color: transparent; border: none; padding: 0.75rem; border-radius: 0.5rem; cursor: pointer; color: var(--text-secondary); transition: all 0.2s ease; }
-        .icon-btn:hover { background-color: var(--surface-alt); color: var(--text-primary); }
-        .primary-btn { background-color: var(--primary); color: white; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; border: none; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-        .primary-btn:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow); }
-        .tabs-container { display: flex; gap: 0.5rem; border-bottom: 2px solid var(--border); margin-bottom: 1.5rem; overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none; }
-        .tabs-container::-webkit-scrollbar { display: none; }
-        .tab-btn { padding: 0.75rem 1.25rem; border: none; background: transparent; color: var(--text-secondary); font-weight: 600; cursor: pointer; transition: all 0.2s ease; border-bottom: 3px solid transparent; white-space: nowrap; display: flex; align-items: center; gap: 0.5rem; }
-        .tab-btn.active, .tab-btn:hover { color: var(--primary); }
-        .tab-btn.active { border-bottom-color: var(--primary); }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
-        .feature-btn { background-color: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; text-align: left; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.75rem; color: var(--text-primary); }
-        .feature-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--primary); color: var(--primary); }
-        .feature-btn .icon { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border-radius: 0.5rem; background-color: var(--primary-light); color: var(--primary); flex-shrink: 0; }
-        .feature-btn .pro-badge { background: linear-gradient(135deg, #facc15, #f59e0b); color: #422006; font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 9999px; margin-left: auto; text-transform: uppercase; }
-        .external-links { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
-        .external-links-title { font-weight: 600; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .external-links .links-group { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-        .external-btn { background-color: var(--surface-alt); color: var(--text-secondary); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: all 0.2s ease; }
-        .external-btn:hover { color: var(--primary); border-color: var(--primary-light); background-color: var(--primary-light); }
-        .message-alert { margin-top: 1.5rem; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 500; text-align: center; display: none; transition: all 0.3s ease; border: 1px solid transparent; }
-        .message-alert.show { display: block; animation: slideIn 0.3s ease-out; }
-        .message-alert.error { background: #fee2e2; color: #dc2626; border-color: #fecaca; }
-        .message-alert.info { background: #dbeafe; color: #2563eb; border-color: #bfdbfe; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .content-section { background: var(--surface); border-radius: 20px; padding: 2.5rem; margin: 2rem 0; max-width: 1000px; box-shadow: var(--shadow-lg); display: none; position: relative; overflow: hidden; animation: fadeIn 0.5s ease-out; }
-        .section-header{font-size:1.75rem;font-weight:700;color:var(--text-primary);margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:.75rem}
-        .loading-overlay{position:absolute;inset:0;background:hsla(0,0%,100%,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;border-radius:20px;transition:opacity .3s ease}
-        html.dark .loading-overlay { background: rgba(30, 41, 59, 0.95); }
-        .loading-spinner{width:48px;height:48px;border:4px solid var(--border);border-top:4px solid var(--primary);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1rem}
-        .loading-text{color:var(--primary);font-weight:600;font-size:1.125rem}
-        @keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
-        .exercise-item,.question-item{background:var(--surface-alt);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;transition:all .3s ease}.exercise-item:hover,.question-item:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.exercise-sentence,.question-text{font-size:1.125rem;font-weight:500;color:var(--text-primary);margin-bottom:1rem;line-height:1.7}.exercise-options,.question-options{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
-        .option-btn{background:var(--surface);color:var(--primary);border:2px solid var(--primary-light);padding:.75rem 1.25rem;border-radius:12px;cursor:pointer;font-weight:500;transition:all .3s ease;position:relative}
-        html.dark .option-btn { color: #f1f5f9; border-color: var(--border); }
-        .option-btn:hover{transform:translateY(-2px);border-color:var(--primary);background-color:var(--primary-light);box-shadow:0 4px 12px rgba(217, 70, 239, 0.2)}
-        .option-btn:disabled{cursor:not-allowed;opacity:.7}.option-btn:disabled:hover{transform:translateY(0);box-shadow:none;background-color:var(--surface)}.option-btn.correct{background:var(--secondary)!important;color:#fff!important;border-color:var(--secondary)!important}.option-btn.incorrect{background:#ef4444!important;color:#fff!important;border-color:#dc2626!important}.exercise-translation,.question-translation{font-style:italic;color:var(--text-secondary);font-size:.9rem}.exercise-feedback,.question-feedback{font-weight:600;margin-top:1rem;padding:.75rem 1rem;border-radius:8px;background:var(--surface-alt)}
-        .table-container{overflow-x:auto;}table{width:100%;border-collapse:collapse;margin-top:1rem;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}th,td{padding:1rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}th{background:var(--surface-alt);font-weight:600;color:var(--text-primary)}tr:last-child td{border-bottom:none}tr:hover{background:rgba(217, 70, 239, 0.05)}
-        .info-card{background:var(--surface-alt);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}.card-title{font-size:1.125rem;font-weight:600;color:var(--primary);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}.card-title-alt{font-size:1.1rem;font-weight:600;margin-top:1rem;margin-bottom:.5rem;color:var(--text-primary)}.conversation-container{min-height:60vh;display:flex;flex-direction:column;background:var(--surface-alt);border-radius:16px;border:1px solid var(--border);overflow:hidden}.message-area{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem}.chat-message{max-width:75%;padding:.875rem 1.25rem;border-radius:18px;font-weight:500;line-height:1.5;animation:messageAppear .3s ease-out}.chat-message.ai{background:var(--surface);border:1px solid var(--border);color:var(--text-primary);align-self:flex-start;border-bottom-left-radius:6px}.chat-message.user{background:var(--primary);color:#fff;align-self:flex-end;border-bottom-right-radius:6px}@keyframes messageAppear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.chat-input-container{padding:1rem 1.5rem;background:var(--surface);border-top:1px solid var(--border);display:flex;gap:1rem}.chat-input{flex:1;padding:.875rem 1.25rem;border:2px solid var(--border);border-radius:12px;outline:none;font-size:1rem;transition:all .3s ease;color:var(--text-primary);background-color:var(--surface-alt);}.chat-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(217, 70, 239, 0.1)}.chat-send-btn{background:var(--primary);color:#fff;border:none;padding:.875rem 1.5rem;border-radius:12px;cursor:pointer;font-weight:600;transition:all .3s ease}.chat-send-btn:hover{background:var(--primary-hover)}
-        .audio-player{background:var(--surface-alt);border-radius:16px;padding:1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;border:1px solid var(--border)}.audio-controls{display:flex;align-items:center;gap:1rem}.audio-btn{background:var(--primary);color:#fff;border:none;width:50px;height:50px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;box-shadow:var(--shadow)}.audio-btn:hover{background:var(--primary-hover);transform:scale(1.05)}.audio-btn:disabled{background-color:var(--text-secondary);cursor:not-allowed;transform:none;opacity:.7}.audio-btn .spinning-loader{width:24px;height:24px;border:3px solid hsla(0,0%,100%,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}.audio-status{font-weight:500;color:var(--text-secondary);min-width:100px;text-align:center}.transcript-toggle-btn{background-color:var(--surface);color:var(--primary);border:1px solid var(--primary-light);padding:.5rem 1rem;border-radius:12px;cursor:pointer;font-weight:500;transition:all .3s ease}.transcript-toggle-btn:hover{background-color:var(--primary-light)}
-        .speaking-practice-card{min-height:100px;display:flex;align-items:center;justify-content:center}.textarea-input{width:100%;min-height:100px;padding:1rem;border-radius:12px;border:2px solid var(--border);font-size:1rem;resize:vertical;background-color:var(--surface);color:var(--text-primary)}.textarea-input:focus{outline:none;border-color:var(--primary)}
-        .pronunciation-record-btn { background: linear-gradient(to right, var(--primary), var(--secondary)); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 0.75rem; box-shadow: var(--shadow); }
-        .pronunciation-record-btn:hover { transform: scale(1.05); box-shadow: var(--shadow-lg); }
-        .pronunciation-record-btn.recording { animation: pulse 1.5s infinite; background: #ef4444; }
-        @keyframes pulse { 0% { transform: scale(1); box-shadow: var(--shadow); } 50% { transform: scale(1.05); box-shadow: var(--shadow-lg); } 100% { transform: scale(1); box-shadow: var(--shadow); } }
-        .pronunciation-score-card { background: var(--surface); border: 2px solid var(--primary-light); border-radius: 16px; padding: 1.5rem; text-align: center; }
-        .score-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; font-weight: 700; color: var(--primary); background: var(--primary-light); border: 5px solid var(--primary); }
-        .chat-message .translation { font-size: 0.8rem; margin-top: 0.5rem; font-style: italic; color: var(--text-secondary); opacity: 0.8; }
-        .chat-message.user .translation { color: #fbcfe8; }
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
-        .modal-content { background-color: var(--surface); margin: auto; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); width: 90%; max-width: 700px; animation: fadeInScale 0.3s ease-out; }
-        @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .close-button { color: var(--text-secondary); float: right; font-size: 28px; font-weight: bold; }
-        .close-button:hover, .close-button:focus { color: var(--text-primary); text-decoration: none; cursor: pointer; }
-        .correction-table th { background-color: var(--primary-light); color: var(--primary); }
-        html.dark .correction-table th { background-color: #581c87; color: #f0abfc; }
-        .correction-table td strong { color: var(--primary); }
-        .unused-words-section { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-top: 1.5rem; }
-        #unusedWordsList { color: var(--text-secondary) }
-        @media (max-width: 768px) { .main-container { margin: 1.5rem auto; } .lookup-card, .content-section { padding: 1.5rem; } .header h1 { font-size: 2.25rem; } .tab-btn { padding: 0.75rem 1rem; } }
-        @media (max-width: 640px) { .main-container { margin: 1rem auto; padding: 0 0.75rem; } .header { margin-bottom: 1.5rem; } .header h1 { font-size: 1.875rem; } .header p { font-size: 1rem; } .lookup-card, .content-section { padding: 1rem; border-radius: 1rem; } .input-group { flex-wrap: wrap; gap: 0.75rem; } .main-input { flex-basis: 100%; order: 1; text-align: center; } .primary-btn { flex-basis: 100%; order: 3; justify-content: center; } .icon-btn { padding: 0.5rem; } .input-group > .icon-btn:first-of-type { order: 2; margin-left: auto; } .input-group > .icon-btn:nth-of-type(2) { order: 2; margin-right: auto; } .features-grid { grid-template-columns: 1fr; } .content-section { padding: 1.5rem 1rem; } .section-header { font-size: 1.5rem; } .practice-actions { gap: 0.5rem; flex-wrap: wrap; justify-content: center; } .practice-actions .feature-btn, .practice-actions .primary-btn, .pronunciation-record-btn { padding: 0.75rem 1.25rem; font-size: 0.875rem; flex-grow: 0; justify-content: center; } }
+        .main-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .header h1 span {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .lookup-card {
+            background-color: var(--surface);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.1);
+        }
+
+        .main-input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .icon-btn {
+            background-color: transparent;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: var(--surface-alt);
+            color: var(--text-primary);
+        }
+
+        .primary-btn {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .primary-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .feature-btn {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .feature-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .feature-btn .icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            display: grid;
+            place-items: center;
+            border-radius: 0.5rem;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .feature-btn .pro-badge {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            color: #422006;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            margin-left: auto;
+            text-transform: uppercase;
+        }
+
+        .external-links {
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .external-links-title {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .external-links .links-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .external-btn {
+            background-color: var(--surface-alt);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .external-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary-light);
+            background-color: var(--primary-light);
+        }
+
+        .message-alert {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .message-alert.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message-alert.error {
+            background: #fee2e2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .message-alert.info {
+            background: #dbeafe;
+            color: #2563eb;
+            border-color: #bfdbfe;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            max-width: 1000px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .section-header {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: .75rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: .75rem
+        }
+
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: hsla(0, 0%, 100%, .95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 20px;
+            transition: opacity .3s ease
+        }
+
+        html.dark .loading-overlay {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem
+        }
+
+        .loading-text {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.125rem
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .exercise-item,
+        .question-item {
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all .3s ease
+        }
+
+        .exercise-item:hover,
+        .question-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow)
+        }
+
+        .exercise-sentence,
+        .question-text {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.7
+        }
+
+        .exercise-options,
+        .question-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem;
+            margin-bottom: 1rem
+        }
+
+        .option-btn {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--primary-light);
+            padding: .75rem 1.25rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all .3s ease;
+            position: relative
+        }
+
+        html.dark .option-btn {
+            color: #f1f5f9;
+            border-color: var(--border);
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(217, 70, 239, 0.2)
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: .7
+        }
+
+        .option-btn:disabled:hover {
+            transform: translateY(0);
+            box-shadow: none;
+            background-color: var(--surface)
+        }
+
+        .option-btn.correct {
+            background: var(--secondary) !important;
+            color: #fff !important;
+            border-color: var(--secondary) !important
+        }
+
+        .option-btn.incorrect {
+            background: #ef4444 !important;
+            color: #fff !important;
+            border-color: #dc2626 !important
+        }
+
+        .exercise-translation,
+        .question-translation {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: .9rem
+        }
+
+        .exercise-feedback,
+        .question-feedback {
+            font-weight: 600;
+            margin-top: 1rem;
+            padding: .75rem 1rem;
+            border-radius: 8px;
+            background: var(--surface-alt)
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border)
+        }
+
+        th,
+        td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top
+        }
+
+        th {
+            background: var(--surface-alt);
+            font-weight: 600;
+            color: var(--text-primary)
+        }
+
+        tr:last-child td {
+            border-bottom: none
+        }
+
+        tr:hover {
+            background: rgba(217, 70, 239, 0.05)
+        }
+
+        .info-card {
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: .75rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .card-title-alt {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: .5rem;
+            color: var(--text-primary)
+        }
+
+        .conversation-container {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface-alt);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden
+        }
+
+        .message-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem
+        }
+
+        .chat-message {
+            max-width: 75%;
+            padding: .875rem 1.25rem;
+            border-radius: 18px;
+            font-weight: 500;
+            line-height: 1.5;
+            animation: messageAppear .3s ease-out
+        }
+
+        .chat-message.ai {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 6px
+        }
+
+        .chat-message.user {
+            background: var(--primary);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 6px
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .chat-input-container {
+            padding: 1rem 1.5rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: .875rem 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            font-size: 1rem;
+            transition: all .3s ease;
+            color: var(--text-primary);
+            background-color: var(--surface-alt);
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.1)
+        }
+
+        .chat-send-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: .875rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all .3s ease
+        }
+
+        .chat-send-btn:hover {
+            background: var(--primary-hover)
+        }
+
+        .audio-player {
+            background: var(--surface-alt);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid var(--border)
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .audio-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .3s ease;
+            box-shadow: var(--shadow)
+        }
+
+        .audio-btn:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05)
+        }
+
+        .audio-btn:disabled {
+            background-color: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            opacity: .7
+        }
+
+        .audio-btn .spinning-loader {
+            width: 24px;
+            height: 24px;
+            border: 3px solid hsla(0, 0%, 100%, .3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite
+        }
+
+        .audio-status {
+            font-weight: 500;
+            color: var(--text-secondary);
+            min-width: 100px;
+            text-align: center
+        }
+
+        .transcript-toggle-btn {
+            background-color: var(--surface);
+            color: var(--primary);
+            border: 1px solid var(--primary-light);
+            padding: .5rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all .3s ease
+        }
+
+        .transcript-toggle-btn:hover {
+            background-color: var(--primary-light)
+        }
+
+        .speaking-practice-card {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .textarea-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            font-size: 1rem;
+            resize: vertical;
+            background-color: var(--surface);
+            color: var(--text-primary)
+        }
+
+        .textarea-input:focus {
+            outline: none;
+            border-color: var(--primary)
+        }
+
+        .pronunciation-record-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow);
+        }
+
+        .pronunciation-record-btn:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pronunciation-record-btn.recording {
+            animation: pulse 1.5s infinite;
+            background: #ef4444;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: var(--shadow);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: var(--shadow-lg);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: var(--shadow);
+            }
+        }
+
+        .pronunciation-score-card {
+            background: var(--surface);
+            border: 2px solid var(--primary-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 5px solid var(--primary);
+        }
+
+        .chat-message .translation {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        .chat-message.user .translation {
+            color: #fbcfe8;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--surface);
+            margin: auto;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 700px;
+            animation: fadeInScale 0.3s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .close-button {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--text-primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .correction-table th {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        html.dark .correction-table th {
+            background-color: #581c87;
+            color: #f0abfc;
+        }
+
+        .correction-table td strong {
+            color: var(--primary);
+        }
+
+        .unused-words-section {
+            background: var(--surface-alt);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        #unusedWordsList {
+            color: var(--text-secondary)
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1.5rem auto;
+            }
+
+            .lookup-card,
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2.25rem;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-container {
+                margin: 1rem auto;
+                padding: 0 0.75rem;
+            }
+
+            .header {
+                margin-bottom: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.875rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .lookup-card,
+            .content-section {
+                padding: 1rem;
+                border-radius: 1rem;
+            }
+
+            .input-group {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .main-input {
+                flex-basis: 100%;
+                order: 1;
+                text-align: center;
+            }
+
+            .primary-btn {
+                flex-basis: 100%;
+                order: 3;
+                justify-content: center;
+            }
+
+            .icon-btn {
+                padding: 0.5rem;
+            }
+
+            .input-group>.icon-btn:first-of-type {
+                order: 2;
+                margin-left: auto;
+            }
+
+            .input-group>.icon-btn:nth-of-type(2) {
+                order: 2;
+                margin-right: auto;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .section-header {
+                font-size: 1.5rem;
+            }
+
+            .practice-actions {
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .practice-actions .feature-btn,
+            .practice-actions .primary-btn,
+            .pronunciation-record-btn {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.875rem;
+                flex-grow: 0;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
+
 <body class="transition-colors duration-300">
 
     <div class="main-container">
         <header class="header relative">
             <div class="absolute top-0 right-0">
                 <button id="theme-toggle" class="icon-btn p-2 rounded-full" title="Chuyển chế độ Sáng/Tối">
-                    <svg id="theme-toggle-dark-icon" class="hidden h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon" class="hidden h-6 w-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    <svg id="theme-toggle-dark-icon" class="hidden h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon" class="hidden h-6 w-6" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"
+                            fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
                 </button>
             </div>
             <h1>Chào mừng đến với <span>Chinese Mastery Hub</span></h1>
@@ -135,15 +1053,34 @@
 
         <div class="lookup-card">
             <div class="input-group">
-                <input type="text" class="main-input" id="vocabularyInput" placeholder="Nhập từ Tiếng Việt, Pinyin, hoặc chủ đề...">
+                <input type="text" class="main-input" id="vocabularyInput"
+                    placeholder="Nhập từ Tiếng Việt, Pinyin, hoặc chủ đề...">
                 <button class="icon-btn" id="btnPasteClipboard" title="Dán từ clipboard">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                        <path
+                            d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+                    </svg>
                 </button>
                 <button class="icon-btn" id="btnClearInput" title="Xóa nội dung">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                        <path fill-rule="evenodd"
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                    </svg>
                 </button>
                 <button class="primary-btn" id="btnQuickSearch">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M8 11.5v-3"></path><path d="M14 11.5v-3"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <path d="M8 11.5v-3"></path>
+                        <path d="M14 11.5v-3"></path>
+                    </svg>
                     Tra & Nghe
                 </button>
             </div>
@@ -152,59 +1089,98 @@
 
             <div class="tabs-container">
                 <button class="tab-btn active" data-tab="tab-learn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
                     Học & Luyện Tập
                 </button>
                 <button class="tab-btn" data-tab="tab-create">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
                     Sáng Tạo
                 </button>
-                 <button class="tab-btn" data-tab="tab-analyze">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <button class="tab-btn" data-tab="tab-analyze">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
                     Phân Tích
                 </button>
                 <button class="tab-btn" data-tab="tab-interactive">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><circle cx="12" cy="10" r="2"></circle><line x1="8" y1="2" x2="8" y2="4"></line><line x1="16" y1="2" x2="16" y2="4"></line></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 18a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2"></path>
+                        <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                        <circle cx="12" cy="10" r="2"></circle>
+                        <line x1="8" y1="2" x2="8" y2="4"></line>
+                        <line x1="16" y1="2" x2="16" y2="4"></line>
+                    </svg>
                     Tương Tác AI
                 </button>
             </div>
 
             <div id="tab-learn" class="tab-content active">
                 <div class="features-grid">
-                    <button class="feature-btn" id="btnGenerateExplanation"><span class="icon">📚</span><span>Giải thích Từ vựng / Ngữ pháp</span></button>
-                    <button class="feature-btn" id="btnGenerateExamples"><span class="icon">💡</span><span>Tạo Ví dụ theo Ngữ cảnh</span></button>
-                    <button class="feature-btn" id="btnGenerateExercise"><span class="icon">✍️</span><span>Bài tập Điền từ & Trắc nghiệm</span></button>
-                    <button class="feature-btn" id="btnGenerateListeningFillInTheBlank"><span class="icon">🎧</span><span>Bài tập Nghe & Điền từ</span></button>
-                    <button class="feature-btn" id="btnGenerateReadingAndQuestions"><span class="icon">📖</span><span>Bài đọc (Pinyin) & Câu hỏi</span></button>
-                    <button class="feature-btn" id="btnGenerateListeningAndQuestions"><span class="icon">🗣️</span><span>Bài nghe & Câu hỏi</span></button>
+                    <button class="feature-btn" id="btnGenerateExplanation"><span class="icon">📚</span><span>Giải thích
+                            Từ vựng / Ngữ pháp</span></button>
+                    <button class="feature-btn" id="btnGenerateExamples"><span class="icon">💡</span><span>Tạo Ví dụ
+                            theo Ngữ cảnh</span></button>
+                    <button class="feature-btn" id="btnGenerateExercise"><span class="icon">✍️</span><span>Bài tập Điền
+                            từ & Trắc nghiệm</span></button>
+                    <button class="feature-btn" id="btnGenerateListeningFillInTheBlank"><span
+                            class="icon">🎧</span><span>Bài tập Nghe & Điền từ</span></button>
+                    <button class="feature-btn" id="btnGenerateReadingAndQuestions"><span
+                            class="icon">📖</span><span>Bài đọc (Pinyin) & Câu hỏi</span></button>
+                    <button class="feature-btn" id="btnGenerateListeningAndQuestions"><span
+                            class="icon">🗣️</span><span>Bài nghe & Câu hỏi</span></button>
                 </div>
             </div>
 
             <div id="tab-create" class="tab-content">
                 <div class="features-grid">
-                    <button class="feature-btn" id="btnCorrectPinyin"><span class="icon">📝</span><span>Sửa lỗi Pinyin <span class="pro-badge">PRO</span></span></button>
-                    <button class="feature-btn" id="btnGenerateDialogue"><span class="icon">💬</span><span>Tạo Đoạn Hội thoại</span></button>
-                    <button class="feature-btn" id="btnGenerateParagraphs"><span class="icon">📄</span><span>Viết Đoạn văn theo Từ khóa</span></button>
-                    <button class="feature-btn" id="btnSummarizeText"><span class="icon">📋</span><span>Tóm tắt Văn bản (Pinyin)</span></button>
-                    <button class="feature-btn" id="btnGenerateSituationalSentences"><span class="icon">📧</span><span>Tạo câu theo Tình huống</span></button>
+                    <button class="feature-btn" id="btnCorrectPinyin"><span class="icon">📝</span><span>Sửa lỗi Pinyin
+                            <span class="pro-badge">PRO</span></span></button>
+                    <button class="feature-btn" id="btnGenerateDialogue"><span class="icon">💬</span><span>Tạo Đoạn Hội
+                            thoại</span></button>
+                    <button class="feature-btn" id="btnGenerateParagraphs"><span class="icon">📄</span><span>Viết Đoạn
+                            văn theo Từ khóa</span></button>
+                    <button class="feature-btn" id="btnSummarizeText"><span class="icon">📋</span><span>Tóm tắt Văn bản
+                            (Pinyin)</span></button>
+                    <button class="feature-btn" id="btnGenerateSituationalSentences"><span
+                            class="icon">📧</span><span>Tạo câu theo Tình huống</span></button>
                 </div>
             </div>
 
             <div id="tab-analyze" class="tab-content">
                 <div class="features-grid">
-                    <button class="feature-btn" id="btnCompareVocabulary"><span class="icon">⚖️</span><span>So sánh các Từ Pinyin tương tự</span></button>
-                    <button class="feature-btn" id="btnAnalyzeTones"><span class="icon">🎭</span><span>Phân tích Thanh điệu (Tones)</span></button>
-                    <button class="feature-btn" id="btnCheckPopularity"><span class="icon">📊</span><span>Kiểm tra Mức độ Phổ Biến</span></button>
-                    <button class="feature-btn" id="btnTranslateSentence"><span class="icon">🔁</span><span>Dịch câu Việt - Trung</span></button>
+                    <button class="feature-btn" id="btnCompareVocabulary"><span class="icon">⚖️</span><span>So sánh các
+                            Từ Pinyin tương tự</span></button>
+                    <button class="feature-btn" id="btnAnalyzeTones"><span class="icon">🎭</span><span>Phân tích Thanh
+                            điệu (Tones)</span></button>
+                    <button class="feature-btn" id="btnCheckPopularity"><span class="icon">📊</span><span>Kiểm tra Mức
+                            độ Phổ Biến</span></button>
+                    <button class="feature-btn" id="btnTranslateSentence"><span class="icon">🔁</span><span>Dịch câu
+                            Việt - Trung</span></button>
                 </div>
             </div>
 
             <div id="tab-interactive" class="tab-content">
                 <div class="features-grid">
-                    <button class="feature-btn" id="btnStartConversationSimulator"><span class="icon">🤖</span><span>Mô phỏng Hội thoại với AI</span></button>
-                    <button class="feature-btn" id="btnStartSpeakingPractice"><span class="icon">🎙️</span><span>Luyện phản xạ nói (AI)</span></button>
-                    <button class="feature-btn" id="btnStartPinyinPractice"><span class="icon">✍️</span><span>Luyện gõ Pinyin (AI)</span></button>
-                    <button class="feature-btn" id="btnStartSpeakingPracticeManual"><span class="icon">🗣️</span><span>Luyện phản xạ (Thủ công)</span></button>
+                    <button class="feature-btn" id="btnStartConversationSimulator"><span class="icon">🤖</span><span>Mô
+                            phỏng Hội thoại với AI</span></button>
+                    <button class="feature-btn" id="btnStartSpeakingPractice"><span class="icon">🎙️</span><span>Luyện
+                            phản xạ nói (AI)</span></button>
+                    <button class="feature-btn" id="btnStartPinyinPractice"><span class="icon">✍️</span><span>Luyện gõ
+                            Pinyin (AI)</span></button>
+                    <button class="feature-btn" id="btnStartSpeakingPracticeManual"><span
+                            class="icon">🗣️</span><span>Luyện phản xạ (Thủ công)</span></button>
                 </div>
             </div>
 
@@ -221,7 +1197,7 @@
 
         </div>
     </div>
-    
+
     <div id="content-results-area" class="main-container">
     </div>
 
@@ -240,7 +1216,8 @@
             <h2 class="text-xl font-bold mb-4 text-fuchsia-600">Luyện phản xạ (Thủ công)</h2>
             <div class="info-card mb-4">
                 <p class="mb-2 font-semibold">Nhập các câu tiếng Việt bạn muốn luyện tập, mỗi câu một dòng:</p>
-                <textarea id="manualSentencesInput" class="textarea-input" rows="8" placeholder="Ví dụ:&#10;Hôm nay thời tiết rất đẹp.&#10;Tôi đang học tiếng Trung.&#10;Bạn có khỏe không?"></textarea>
+                <textarea id="manualSentencesInput" class="textarea-input" rows="8"
+                    placeholder="Ví dụ:&#10;Hôm nay thời tiết rất đẹp.&#10;Tôi đang học tiếng Trung.&#10;Bạn có khỏe không?"></textarea>
             </div>
             <div class="flex justify-end gap-3">
                 <button id="startManualPracticeBtn" class="primary-btn">Bắt đầu Luyện tập</button>
@@ -267,7 +1244,7 @@
             }
         };
 
-        themeToggleBtn.addEventListener('click', function() {
+        themeToggleBtn.addEventListener('click', function () {
             document.documentElement.classList.toggle('dark');
             localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             applyTheme();
@@ -275,7 +1252,7 @@
 
         // --- Tabbed Interface Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            applyTheme(); 
+            applyTheme();
 
             const tabs = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -294,7 +1271,7 @@
 
         // --- Global State ---
         let conversationHistory = [];
-        let currentUtteranceQueue = []; 
+        let currentUtteranceQueue = [];
         let isSpeakingFullDialogue = false;
         let recognition; // Global variable for SpeechRecognition instance
         let isRecording = false; // To track recording state
@@ -319,9 +1296,9 @@
             if (recognition && typeof recognition.abort === 'function') {
                 recognition.abort();
             }
-            currentUtteranceQueue = []; 
+            currentUtteranceQueue = [];
             isSpeakingFullDialogue = false;
-            
+
             if (isRecording) {
                 if (recognition) recognition.stop();
                 isRecording = false;
@@ -353,13 +1330,13 @@
                 </div>
             `;
             contentResultsArea.innerHTML = sectionHTML;
-            
+
             contentContainers[featureKey] = {
                 container: document.getElementById(containerId),
                 overlay: document.getElementById(overlayId),
                 content: document.getElementById(contentId)
             };
-            
+
             document.getElementById(containerId).scrollIntoView({ behavior: 'smooth', block: 'start' });
 
             return contentContainers[featureKey];
@@ -396,7 +1373,7 @@
                 showMessage('Dán tự động bị chặn bởi trình duyệt. Vui lòng dùng Ctrl+V hoặc Cmd+V để dán.', 'error');
             }
         }
-        
+
         // --- Main Feature Functions ---
         function openLink(type) {
             const vocabulary = vocabularyInput.value.trim();
@@ -417,44 +1394,90 @@
         }
 
         async function callGemini(prompt, schema = null) {
-             let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-             const payload = { contents: chatHistory };
-             if (schema) {
-                 payload.generationConfig = {
-                     responseMimeType: "application/json",
-                     responseSchema: schema
-                 };
-             }
-             // IMPORTANT: API Key is required for this to work.
-             // Replace "" with your actual Google AI Studio API key.
-             const apiKey = "AIzaSyBHixBCT2ZhzAzoNXMOpsvX7ltV2-oKTDc";
-             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-             
-             const response = await fetch(apiUrl, {
-                 method: 'POST',
-                 headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify(payload)
-             });
-             
-             if (!response.ok) {
+            // OpenRouter API configuration
+            const apiKey = "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";
+            const apiUrl = "https://openrouter.ai/api/v1/chat/completions";
+
+            // Prepare the system message for JSON schema if provided
+            let systemMessage = "You are a helpful assistant that responds in JSON format.";
+            if (schema) {
+                systemMessage += " You must respond ONLY with valid JSON that matches the requested schema. Do not include any markdown formatting, code blocks, or explanatory text - just the raw JSON object.";
+            }
+
+            // Add JSON instruction to the prompt
+            let enhancedPrompt = prompt;
+            if (schema) {
+                enhancedPrompt += "\n\nIMPORTANT: Respond with ONLY valid JSON. Do not wrap it in markdown code blocks or add any other text.";
+            }
+
+            // Build the payload for OpenRouter API
+            const payload = {
+                model: "openai/gpt-4o-mini-2024-07-18",
+                messages: [
+                    {
+                        role: "system",
+                        content: systemMessage
+                    },
+                    {
+                        role: "user",
+                        content: enhancedPrompt
+                    }
+                ],
+                temperature: 0.7,
+                response_format: { type: "json_object" }
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': window.location.href,
+                    'X-Title': 'Chinese Mastery Hub'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
                 const errorBody = await response.text();
                 console.error("API Error Response:", errorBody);
                 throw new Error(`Lỗi API: ${response.status} ${response.statusText}`);
-             }
+            }
 
-             const result = await response.json();
-             
-             if (result.candidates && result.candidates[0]?.content?.parts?.[0]?.text) {
-                 const text = result.candidates[0].content.parts[0].text;
-                 try {
-                     return JSON.parse(text);
-                 } catch (e) {
-                     console.error("Lỗi phân tích JSON:", e, "Dữ liệu gốc:", text);
-                     throw new Error("Không thể phân tích phản hồi từ API. Phản hồi không phải là JSON hợp lệ.");
-                 }
-             }
-             console.error("Phản hồi API không hợp lệ:", result);
-             throw new Error('Cấu trúc phản hồi API không mong đợi hoặc trống.');
+            const result = await response.json();
+
+            if (result.choices && result.choices[0]?.message?.content) {
+                let text = result.choices[0].message.content.trim();
+
+                // Remove markdown code blocks if present
+                if (text.startsWith('```json')) {
+                    text = text.replace(/^```json\s*\n/, '').replace(/\n```\s*$/, '');
+                } else if (text.startsWith('```')) {
+                    text = text.replace(/^```\s*\n/, '').replace(/\n```\s*$/, '');
+                }
+
+                try {
+                    let parsedData = JSON.parse(text);
+
+                    // Handle cases where the response is wrapped in an extra object
+                    // For example: { "examples": [...] } or { "data": {...} }
+                    if (parsedData && typeof parsedData === 'object' && !Array.isArray(parsedData)) {
+                        const keys = Object.keys(parsedData);
+                        // If there's only one key and its value is an array or object, unwrap it
+                        if (keys.length === 1 && (Array.isArray(parsedData[keys[0]]) || typeof parsedData[keys[0]] === 'object')) {
+                            console.log('Unwrapping nested response from key:', keys[0]);
+                            parsedData = parsedData[keys[0]];
+                        }
+                    }
+
+                    return parsedData;
+                } catch (e) {
+                    console.error("Lỗi phân tích JSON:", e, "Dữ liệu gốc:", text);
+                    throw new Error("Không thể phân tích phản hồi từ API. Phản hồi không phải là JSON hợp lệ.");
+                }
+            }
+            console.error("Phản hồi API không hợp lệ:", result);
+            throw new Error('Cấu trúc phản hồi API không mong đợi hoặc trống.');
         }
 
         async function handleFeature(featureKey, headerText, promptGenerator, renderer, inputValidator = (input) => !!input) {
@@ -462,7 +1485,7 @@
 
             let featureInput;
             if (featureKey === 'speakingPracticeManual') {
-                featureInput = arguments[arguments.length - 1]; 
+                featureInput = arguments[arguments.length - 1];
             } else {
                 featureInput = vocabularyInput.value.trim();
             }
@@ -475,7 +1498,7 @@
 
             try {
                 if (['conversationSimulator', 'speakingPractice', 'speakingPracticeManual', 'pinyinPractice'].includes(featureKey)) {
-                     await renderer(featureInput, content, headerText);
+                    await renderer(featureInput, content, headerText);
                 } else {
                     const { prompt, schema } = promptGenerator(featureInput);
                     const data = await callGemini(prompt, schema);
@@ -496,10 +1519,10 @@
                 if (overlay) overlay.style.display = 'none';
             }
         }
-        
+
         // --- RENDERERS ---
         const renderers = {
-             quickLookup: (data, el) => {
+            quickLookup: (data, el) => {
                 el.innerHTML = `
                     <div class="info-card p-4">
                       <div class="flex items-center gap-4">
@@ -547,7 +1570,7 @@
                     </div>`).join('');
             },
             listeningFillInTheBlank: (data, el, headerText) => {
-                 el.innerHTML = `<h2 class="section-header">🎧 ${headerText}</h2>` + data.map(item => `
+                el.innerHTML = `<h2 class="section-header">🎧 ${headerText}</h2>` + data.map(item => `
                     <div class="exercise-item">
                         <div class="flex items-center gap-4 mb-4">
                              <button class="audio-btn" onclick="playQuestionAudio(this, '${item.hanzi_sentence.replace(/'/g, "\\'")}')" title="Nghe câu">
@@ -570,20 +1593,20 @@
                 data.antonyms = data.antonyms || [];
                 data.collocations = data.collocations || [];
                 data.memory_tips = data.memory_tips || [];
-                
+
                 console.log('Rendering explanation with data:', {
                     hasSynonyms: data.synonyms?.length || 0,
                     hasAntonyms: data.antonyms?.length || 0,
                     hasCollocations: data.collocations?.length || 0,
                     hasMemoryTips: data.memory_tips?.length || 0
                 });
-                
+
                 const renderStars = (rating) => {
                     const fullStars = Math.round(rating);
                     const emptyStars = 5 - fullStars;
                     return '★'.repeat(fullStars) + '☆'.repeat(emptyStars);
                 };
-                
+
                 const renderWordList = (items, title, icon, alwaysShow = false) => {
                     if (!items || !Array.isArray(items) || items.length === 0) {
                         if (alwaysShow) {
@@ -603,11 +1626,11 @@
                             <h3 class="card-title">${icon} ${title}</h3>
                             <div class="space-y-3">
                                 ${items.map(item => {
-                                    const escapedPinyin = String(item.pinyin || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                    const escapedHanzi = String(item.hanzi || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                    const escapedMeaning = String(item.meaning || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                    const rating = Number(item.rating) || 0;
-                                    return `
+                        const escapedPinyin = String(item.pinyin || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        const escapedHanzi = String(item.hanzi || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        const escapedMeaning = String(item.meaning || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        const rating = Number(item.rating) || 0;
+                        return `
                                         <div class="flex items-center justify-between py-2 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
                                             <div class="flex-1">
                                                 <p class="font-mono text-slate-800 dark:text-slate-200">${escapedPinyin}</p>
@@ -619,12 +1642,12 @@
                                             </div>
                                         </div>
                                     `;
-                                }).join('')}
+                    }).join('')}
                             </div>
                         </div>
                     `;
                 };
-                
+
                 const memoryTipsSection = data.memory_tips && Array.isArray(data.memory_tips) && data.memory_tips.length > 0 ? `
                     <div class="info-card">
                         <h3 class="card-title">💡 Mẹo để dễ nhớ</h3>
@@ -633,10 +1656,10 @@
                         </ul>
                     </div>
                 ` : '';
-                
+
                 const synonymsSection = renderWordList(data.synonyms, 'Từ đồng nghĩa', '👍', true);
                 const antonymsSection = renderWordList(data.antonyms, 'Từ trái nghĩa', '👎', true);
-                
+
                 // Render collocations as a table, sorted by rating (highest first)
                 const collocationsSection = (() => {
                     if (!data.collocations || !Array.isArray(data.collocations) || data.collocations.length === 0) {
@@ -649,14 +1672,14 @@
                             </div>
                         `;
                     }
-                    
+
                     // Sort by rating descending
                     const sortedCollocations = [...data.collocations].sort((a, b) => {
                         const ratingA = Number(a.rating) || 0;
                         const ratingB = Number(b.rating) || 0;
                         return ratingB - ratingA;
                     });
-                    
+
                     return `
                         <div class="info-card">
                             <h3 class="card-title">🤝 Cách dùng phổ biến (Collocations)</h3>
@@ -672,11 +1695,11 @@
                                     </thead>
                                     <tbody>
                                         ${sortedCollocations.map(item => {
-                                            const escapedPinyin = String(item.pinyin || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                            const escapedHanzi = String(item.hanzi || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                            const escapedMeaning = String(item.meaning || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                                            const rating = Number(item.rating) || 0;
-                                            return `
+                        const escapedPinyin = String(item.pinyin || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        const escapedHanzi = String(item.hanzi || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        const escapedMeaning = String(item.meaning || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        const rating = Number(item.rating) || 0;
+                        return `
                                                 <tr>
                                                     <td class="font-mono">${escapedPinyin}</td>
                                                     <td>${escapedHanzi}</td>
@@ -684,14 +1707,14 @@
                                                     <td class="text-yellow-500 text-lg" title="Đánh giá: ${rating}/5">${renderStars(rating)}</td>
                                                 </tr>
                                             `;
-                                        }).join('')}
+                    }).join('')}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     `;
                 })();
-                
+
                 const speakTarget = (data.hanzi || data.hanzi_word || originalInput || '').trim();
                 const speakButtonHtml = speakTarget ? `
                     <button class="primary-btn flex-shrink-0" onclick="speakText('${speakTarget.replace(/'/g, "\\'")}')">
@@ -710,7 +1733,7 @@
                         ${loopButtonHtml}
                     </div>
                 ` : '';
-                
+
                 el.innerHTML = `
                     <h2 class="section-header">📚 ${headerText}: ${originalInput}</h2>
                     <div class="info-card">
@@ -772,7 +1795,7 @@
                     </div>`;
             },
             dialogue: (data, el, headerText) => {
-                 el.innerHTML = `
+                el.innerHTML = `
                     <h2 class="section-header flex justify-between items-center">
                         <span>💬 ${headerText}</span>
                         <button id="playFullDialogueBtn" class="primary-btn text-sm px-3 py-1.5" title="Phát âm toàn bộ đoạn hội thoại">
@@ -800,8 +1823,8 @@
                     </div>`;
 
                 document.getElementById('playFullDialogueBtn').addEventListener('click', () => {
-                     const allHanziLines = Array.from(el.querySelectorAll('[data-hanzi]')).map(div => div.dataset.hanzi);
-                     playFullDialogue(allHanziLines);
+                    const allHanziLines = Array.from(el.querySelectorAll('[data-hanzi]')).map(div => div.dataset.hanzi);
+                    playFullDialogue(allHanziLines);
                 });
             },
             summary: (data, el, headerText) => {
@@ -864,7 +1887,7 @@
                                     <td>${alt.translation}</td>
                                     <td>${alt.context_explanation}</td>
                                 </tr>`).join('') : `<tr><td colspan="4" class="text-center italic text-gray-500">Không có gợi ý thay thế.</td></tr>`
-                            }
+                    }
                         </tbody>
                     </table>
                     </div>`;
@@ -877,7 +1900,7 @@
                         <div class="prose max-w-none dark:text-gray-300 font-mono leading-relaxed" data-hanzi-passage="${data.reading_passage_hanzi.replace(/"/g, '&quot;')}">${data.reading_passage_pinyin.replace(/\n/g, '<br>')}</div>
                          <button class="primary-btn mt-4" onclick="speakText(this.previousElementSibling.dataset.hanziPassage)">Nghe bài đọc</button>
                     </div>
-                    <h3 class="card-title mt-6">❓ Câu hỏi</h3>` + 
+                    <h3 class="card-title mt-6">❓ Câu hỏi</h3>` +
                     data.questions.map(q => `
                     <div class="question-item" data-correct-answer="${q.correct_option_pinyin.replace(/"/g, '&quot;')}" data-question-translation="${q.question_text_vietnamese.replace(/"/g, '&quot;')}">
                         <p class="question-text">${q.id}. ${q.question_text_vietnamese}</p>
@@ -900,14 +1923,14 @@
                         <h3 class="card-title-alt mt-4">📖 Bản dịch</h3>
                         <div class="prose max-w-none dark:text-gray-400 p-2">${data.audio_script_translation.replace(/\n/g, '<br>')}</div >
                     </div>
-                    <h3 class="card-title-alt mt-6">❓ Câu hỏi (Bằng Tiếng Việt)</h3>` + 
+                    <h3 class="card-title-alt mt-6">❓ Câu hỏi (Bằng Tiếng Việt)</h3>` +
                     data.questions.map(q => `
                     <div class="question-item" data-correct-answer="${q.correct_option_pinyin.replace(/"/g, '&quot;')}" data-question-translation="${q.question_text_vietnamese.replace(/"/g, '&quot;')}" >
                         <p class="question-text">${q.id}. ${q.question_text_vietnamese}</p>
                         <div class="question-options">${q.options_pinyin.map(opt => `<button class="option-btn font-mono" onclick="checkMultipleChoiceAnswer(this)">${opt}</button>`).join('')}</div>
                         <div class="question-feedback"></div>
                     </div>`).join('');
-                
+
                 setupAudioPlayer(data.audio_script_hanzi, document.getElementById('audioPlayerContainer'));
 
                 const toggleBtn = document.getElementById('toggleTranscriptBtn');
@@ -927,7 +1950,7 @@
                             <button id="chatSendButton" class="chat-send-btn">Gửi</button>
                         </div>
                     </div>`;
-                
+
                 const chatInput = document.getElementById('chatInput');
                 const chatSendButton = document.getElementById('chatSendButton');
 
@@ -946,7 +1969,7 @@
                 await getNextAiResponse();
             },
             comparison: (data, el, headerText) => {
-                 el.innerHTML = `
+                el.innerHTML = `
                     <h2 class="section-header">⚖️ ${headerText}</h2>
                     <div class="table-container">
                         <table>
@@ -971,7 +1994,7 @@
             },
             situationalSentences: (data, el, headerText) => {
                 el.innerHTML = `<h2 class="section-header">📧 ${headerText}: ${data.situation}</h2>` +
-                data.sentences.map(sentence => `
+                    data.sentences.map(sentence => `
                     <div class="info-card" data-hanzi="${sentence.hanzi.replace(/"/g, '&quot;')}">
                          <div class="flex items-start justify-between">
                             <div>
@@ -1039,9 +2062,9 @@
                     </div>`;
             },
             speakingPractice: async (topic, el, headerText) => {
-                 const { prompt, schema } = prompts.speakingPractice(topic);
-                 const data = await callGemini(prompt, schema);
-                 renderSpeakingPracticeUI(el, [data], topic, 'ai');
+                const { prompt, schema } = prompts.speakingPractice(topic);
+                const data = await callGemini(prompt, schema);
+                renderSpeakingPracticeUI(el, [data], topic, 'ai');
             },
             speakingPracticeManual: (input, el, headerText) => {
                 // 'input' is the array of sentences from the modal
@@ -1049,12 +2072,12 @@
                 renderSpeakingPracticeUI(el, initialData, '', 'manual');
             },
             pinyinPractice: async (topic, el, headerText) => {
-                 const { prompt, schema } = prompts.pinyinPractice(topic);
-                 const data = await callGemini(prompt, schema);
-                 renderPinyinPracticeUI(el, data, topic);
+                const { prompt, schema } = prompts.pinyinPractice(topic);
+                const data = await callGemini(prompt, schema);
+                renderPinyinPracticeUI(el, data, topic);
             },
         };
-        
+
         function highlightPinyinDifferences(target, typed) {
             // Simple word-by-word comparison for Pinyin
             const targetWords = target.toLowerCase().split(/\s+/).filter(w => w);
@@ -1070,11 +2093,11 @@
             }
             return highlightedTyped.join(' ');
         }
-        
+
         function renderSpeakingPracticeUI(el, initialSentences, topic, mode) {
             let sentences = initialSentences;
             let currentIndex = 0;
-            let currentData = sentences[currentIndex]; 
+            let currentData = sentences[currentIndex];
 
             el.innerHTML = `
                 <h2 class="section-header">🎙️ Luyện phản xạ nói ${mode === 'manual' ? '(Thủ công)' : '(AI)'}</h2>
@@ -1111,7 +2134,7 @@
                     const { prompt, schema } = prompts.speakingPractice(vietnameseSentence);
                     const suggestionData = await callGemini(prompt, schema);
                     currentData = suggestionData; // Update currentData with new suggestions
-                    
+
                     answerContainer.innerHTML = `
                         <div class="info-card">
                            <h3 class="card-title">Gợi ý trả lời</h3>
@@ -1128,9 +2151,9 @@
                     showAnswerBtn.disabled = false;
                 }
             };
-            
+
             const displaySentence = (data) => {
-                currentData = data; 
+                currentData = data;
                 sentenceDisplay.textContent = data.vietnamese_sentence;
                 answerContainer.innerHTML = '';
                 answerContainer.classList.add('hidden');
@@ -1139,40 +2162,40 @@
                 showAnswerBtn.textContent = '💡 Hiện đáp án';
                 showAnswerBtn.disabled = false;
             };
-            
+
             const showNextSentence = async () => {
                 newSentenceBtn.disabled = true;
                 loader.style.display = 'block';
                 sentenceDisplay.style.opacity = '0.3';
-                
+
                 if (mode === 'ai') {
                     const { prompt, schema } = prompts.speakingPractice(topic);
                     const data = await callGemini(prompt, schema);
                     sentences = [data];
                     currentIndex = 0;
                     displaySentence(data);
-                } else { 
+                } else {
                     currentIndex = (currentIndex + 1) % sentences.length;
                     displaySentence(sentences[currentIndex]);
                 }
-                
+
                 loader.style.display = 'none';
                 sentenceDisplay.style.opacity = '1';
                 newSentenceBtn.disabled = false;
             };
-            
+
             showAnswerBtn.addEventListener('click', () => {
                 if (answerContainer.classList.contains('hidden')) {
                     if (currentData.pinyin_suggestion) { // If we already have the answer
-                         answerContainer.innerHTML = `
+                        answerContainer.innerHTML = `
                             <div class="info-card">
                                <h3 class="card-title">Gợi ý trả lời</h3>
                                <p class="font-mono text-lg font-semibold">${currentData.pinyin_suggestion}</p>
                                <button class="icon-btn mt-2" onclick="speakText('${currentData.hanzi_suggestion.replace(/'/g, "\\'")}')">Nghe đáp án</button>
                             </div>
                          `;
-                         answerContainer.classList.remove('hidden');
-                         showAnswerBtn.textContent = '🙈 Ẩn đáp án';
+                        answerContainer.classList.remove('hidden');
+                        showAnswerBtn.textContent = '🙈 Ẩn đáp án';
                     } else { // Fetch it if not
                         fetchAndSetSuggestions(currentData.vietnamese_sentence);
                     }
@@ -1193,7 +2216,7 @@
             newSentenceBtn.addEventListener('click', showNextSentence);
             displaySentence(currentData); // Initial display
         }
-        
+
         function renderPinyinPracticeUI(el, initialData, topic) {
             let currentData = initialData;
 
@@ -1211,7 +2234,7 @@
                      <button id="next-writing-btn" class="feature-btn">🔄 Câu khác</button>
                 </div>
             `;
-            
+
             const promptDisplay = document.getElementById('vietnamese-writing-prompt');
             const inputArea = document.getElementById('pinyin-writing-input');
             const feedbackContainer = document.getElementById('writing-feedback-container');
@@ -1231,30 +2254,30 @@
             };
 
             hintBtn.addEventListener('click', () => {
-                 feedbackContainer.innerHTML = `
+                feedbackContainer.innerHTML = `
                     <div class="info-card">
                        <h3 class="card-title">Gợi ý đáp án</h3>
                        <p class="font-mono text-lg font-semibold">${currentData.pinyin_suggestion}</p>
                        <button class="icon-btn mt-2" onclick="speakText('${currentData.hanzi_suggestion.replace(/'/g, "\\'")}')">Nghe đáp án</button>
                     </div>`;
             });
-            
+
             checkBtn.addEventListener('click', async () => {
                 const userPinyin = inputArea.value.trim();
                 if (!userPinyin) {
                     showMessage("Vui lòng nhập câu trả lời của bạn.", 'error');
                     return;
                 }
-                
+
                 checkBtn.disabled = true;
                 hintBtn.disabled = true;
                 feedbackContainer.innerHTML = '<p class="text-center font-semibold">Đang kiểm tra...</p>';
-                
+
                 const { prompt, schema } = prompts.checkPinyin(currentData.vietnamese_sentence, userPinyin, currentData.pinyin_suggestion);
                 const result = await callGemini(prompt, schema);
-                
+
                 let resultHTML;
-                if(result.is_correct) {
+                if (result.is_correct) {
                     resultHTML = `
                         <div class="info-card border-green-500 bg-green-50 dark:bg-green-900/50 dark:border-green-700">
                             <h3 class="card-title text-green-700 dark:text-green-300">🎉 Chính xác!</h3>
@@ -1263,8 +2286,8 @@
                         </div>
                     `;
                 } else {
-                     const highlightedText = highlightPinyinDifferences(result.corrected_pinyin, userPinyin);
-                     resultHTML = `
+                    const highlightedText = highlightPinyinDifferences(result.corrected_pinyin, userPinyin);
+                    resultHTML = `
                          <div class="info-card border-red-500 bg-red-50 dark:bg-red-900/50 dark:border-red-700">
                             <h3 class="card-title text-red-700 dark:text-red-300">🤔 Cần xem lại!</h3>
                             <p><strong>Câu của bạn:</strong> <span class="font-mono">${highlightedText}</span></p>
@@ -1290,9 +2313,9 @@
                 prompt: `Đánh giá khả năng phát âm tiếng Trung. Văn bản nói được (có thể không chính xác) là: "${spokenText}". Câu đúng phải là: "${targetHanzi}". Hãy so sánh và cho điểm tương đồng từ 0-100. Cung cấp nhận xét ngắn gọn bằng tiếng Việt. Trả về JSON có khóa "score" (số) và "feedback" (chuỗi).`,
                 schema: { type: "OBJECT", properties: { score: { type: "NUMBER" }, feedback: { type: "STRING" } }, required: ["score", "feedback"] }
             }),
-            convertToPinyin: (hanzi) => ({ 
-                prompt: `Chuyển đổi các ký tự tiếng Trung sau đây sang Pinyin có dấu: "${hanzi}". Trả về một đối tượng JSON có khóa duy nhất "pinyin".`, 
-                schema: { type: "OBJECT", properties: { pinyin: { type: "STRING" } }, required: ["pinyin"] } 
+            convertToPinyin: (hanzi) => ({
+                prompt: `Chuyển đổi các ký tự tiếng Trung sau đây sang Pinyin có dấu: "${hanzi}". Trả về một đối tượng JSON có khóa duy nhất "pinyin".`,
+                schema: { type: "OBJECT", properties: { pinyin: { type: "STRING" } }, required: ["pinyin"] }
             }),
             examples: (input) => ({ prompt: `Tạo 15 câu ví dụ tiếng Trung cho từ hoặc chủ đề "${input}". Với mỗi câu, trả về dưới dạng đối tượng JSON có các khóa: "hanzi" (câu bằng chữ Hán), "pinyin" (pinyin có dấu), "vietnamese" (bản dịch tiếng Việt). Toàn bộ kết quả là một mảng JSON các đối tượng này.`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["hanzi", "pinyin", "vietnamese"] } } }),
             exercise: (input) => ({ prompt: `Tạo 10 câu bài tập điền vào chỗ trống cho từ/chủ đề tiếng Trung "${input}". Mỗi câu, cung cấp: câu tiếng Hán đầy đủ, câu pinyin với một từ bị thiếu thay bằng "____", pinyin của từ đúng, 4 lựa chọn pinyin ngẫu nhiên (bao gồm đáp án đúng), và bản dịch tiếng Việt. Trả về mảng JSON với các thuộc tính: "id", "hanzi_sentence", "pinyin_with_blank", "correct_word_pinyin", "options", "translation".`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { id: { type: "NUMBER" }, hanzi_sentence: { type: "STRING" }, pinyin_with_blank: { type: "STRING" }, correct_word_pinyin: { type: "STRING" }, options: { type: "ARRAY", items: { type: "STRING" } }, translation: { type: "STRING" } }, required: ["id", "hanzi_sentence", "pinyin_with_blank", "correct_word_pinyin", "options", "translation"] } } }),
@@ -1312,29 +2335,29 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                 schema: { type: "OBJECT", properties: { explanation: { "type": "STRING" }, components: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" } }, required: ["pinyin", "hanzi", "meaning"] } }, usage_notes: { "type": "STRING" }, memory_tips: { type: "ARRAY", items: { type: "STRING" } }, synonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, antonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, collocations: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } } }, required: ["explanation", "components", "usage_notes", "synonyms", "antonyms", "collocations", "memory_tips"] }
             }),
             correction: (input) => ({ prompt: `Sửa lỗi câu Pinyin sau: "${input}". Hãy đoán chữ Hán tương ứng, kiểm tra ngữ pháp, sau đó cung cấp pinyin gốc, pinyin đã sửa, danh sách các thay đổi (giải thích bằng TIẾNG VIỆT), và bản dịch tiếng Việt của câu đã sửa. Trả về JSON với khóa: "original_pinyin", "corrected_pinyin", "changes" (mảng chuỗi), "translation".`, schema: { type: "OBJECT", properties: { original_pinyin: { type: "STRING" }, corrected_pinyin: { type: "STRING" }, changes: { type: "ARRAY", items: { type: "STRING" } }, translation: { type: "STRING" } }, required: ["original_pinyin", "corrected_pinyin", "changes", "translation"] } }),
-            dialogue: (input) => ({ prompt: `Tạo đoạn hội thoại tiếng Trung về chủ đề "${input}" giữa hai nhân vật (ví dụ: A và B). Cung cấp tên nhân vật, lời thoại chữ Hán, pinyin và bản dịch tiếng Việt cho mỗi dòng đoạn hội thoại dài khoảng 15-25 dòng. Trả về JSON có khóa: "characters" (mảng 2 tên), "dialogue" (mảng các đối tượng có khóa "character", "hanzi", "pinyin", "vietnamese").`, schema: { type: "OBJECT", properties: { characters: {type: "ARRAY", items: {type: "STRING"}}, dialogue: { type: "ARRAY", items: { type: "OBJECT", properties: { character: { type: "STRING" }, hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["character", "hanzi", "pinyin", "vietnamese"] } } }, required: ["characters", "dialogue"] } }),
+            dialogue: (input) => ({ prompt: `Tạo đoạn hội thoại tiếng Trung về chủ đề "${input}" giữa hai nhân vật (ví dụ: A và B). Cung cấp tên nhân vật, lời thoại chữ Hán, pinyin và bản dịch tiếng Việt cho mỗi dòng. Trả về JSON có khóa: "characters" (mảng 2 tên), "dialogue" (mảng các đối tượng có khóa "character", "hanzi", "pinyin", "vietnamese").`, schema: { type: "OBJECT", properties: { characters: { type: "ARRAY", items: { type: "STRING" } }, dialogue: { type: "ARRAY", items: { type: "OBJECT", properties: { character: { type: "STRING" }, hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["character", "hanzi", "pinyin", "vietnamese"] } } }, required: ["characters", "dialogue"] } }),
             summary: (input) => ({ prompt: `Tóm tắt văn bản Pinyin sau đây sang tiếng Việt ngắn gọn: "${input}". Trả về JSON có khóa "summary".`, schema: { type: "OBJECT", properties: { summary: { type: "STRING" } }, required: ["summary"] } }),
-            paragraphs: (input) => ({ 
-                prompt: `Sử dụng các từ vựng tiếng Việt sau: "${input}", hãy: 1. Dịch chúng sang tiếng Trung (Pinyin và Hán tự). 2. Viết một đoạn văn ngắn (150-200 từ) bằng chữ Hán sử dụng tất cả các từ đó. 3. Cung cấp Pinyin cho đoạn văn, trong đó bôi đậm (dùng thẻ <b>) các từ khóa đã cho. 4. Dịch toàn bộ đoạn văn sang tiếng Việt. 5. Tạo một phiên bản dịch "hỗn hợp": lấy bản dịch tiếng Việt ở bước 4, nhưng thay thế các từ đã dịch bằng TỪ VỰNG GỐC (Pinyin) được tô đậm. 6. Liệt kê lại từ vựng đã dùng (pinyin và nghĩa). Trả về JSON có khóa: "pinyin_paragraph", "hanzi_paragraph", "vietnamese_translation", "mixed_vietnamese_translation", "vocabulary_list".`, 
-                schema: { type: "OBJECT", properties: { pinyin_paragraph: { type: "STRING" }, hanzi_paragraph: {type: "STRING"}, vietnamese_translation: { type: "STRING" }, mixed_vietnamese_translation: { type: "STRING" }, vocabulary_list: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, meaning: { type: "STRING" } }, required: ["pinyin", "meaning"] } } }, required: ["pinyin_paragraph", "hanzi_paragraph", "vietnamese_translation", "mixed_vietnamese_translation", "vocabulary_list"] } 
+            paragraphs: (input) => ({
+                prompt: `Sử dụng các từ vựng tiếng Việt sau: "${input}", hãy: 1. Dịch chúng sang tiếng Trung (Pinyin và Hán tự). 2. Viết một đoạn văn ngắn (150-200 từ) bằng chữ Hán sử dụng tất cả các từ đó. 3. Cung cấp Pinyin cho đoạn văn, trong đó bôi đậm (dùng thẻ <b>) các từ khóa đã cho. 4. Dịch toàn bộ đoạn văn sang tiếng Việt. 5. Tạo một phiên bản dịch "hỗn hợp": lấy bản dịch tiếng Việt ở bước 4, nhưng thay thế các từ đã dịch bằng TỪ VỰNG GỐC (Pinyin) được tô đậm. 6. Liệt kê lại từ vựng đã dùng (pinyin và nghĩa). Trả về JSON có khóa: "pinyin_paragraph", "hanzi_paragraph", "vietnamese_translation", "mixed_vietnamese_translation", "vocabulary_list".`,
+                schema: { type: "OBJECT", properties: { pinyin_paragraph: { type: "STRING" }, hanzi_paragraph: { type: "STRING" }, vietnamese_translation: { type: "STRING" }, mixed_vietnamese_translation: { type: "STRING" }, vocabulary_list: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, meaning: { type: "STRING" } }, required: ["pinyin", "meaning"] } } }, required: ["pinyin_paragraph", "hanzi_paragraph", "vietnamese_translation", "mixed_vietnamese_translation", "vocabulary_list"] }
             }),
             popularity: (input) => ({ prompt: `Phân tích độ phổ biến của từ Pinyin "${input}". Cung cấp trạng thái ("Rất phổ biến", "Phổ biến", "Ít phổ biến"), bản dịch, ngữ cảnh. Nếu không phổ biến, đề xuất 1-2 phương án thay thế. Trả về JSON có khóa: "original_item" (đối tượng có 'pinyin', 'popularity_status', 'translation', 'context_explanation'), và "suggested_alternatives" (mảng các đối tượng tương tự).`, schema: { type: "OBJECT", properties: { original_item: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, popularity_status: { type: "STRING" }, translation: { type: "STRING" }, context_explanation: { type: "STRING" } } }, suggested_alternatives: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, popularity_status: { type: "STRING" }, translation: { type: "STRING" }, context_explanation: { type: "STRING" } } } } }, required: ["original_item"] } }),
             reading: (input) => ({ prompt: `Tạo bài đọc hiểu tiếng Trung (khoảng 100 chữ Hán) về chủ đề "${input}". Tạo 3 câu hỏi trắc nghiệm bằng Tiếng Việt. Mỗi câu hỏi có 3 lựa chọn bằng Pinyin. Trả về JSON: "reading_passage_hanzi", "reading_passage_pinyin", "questions" (mảng, mỗi đối tượng chứa: "id", "question_text_vietnamese", "options_pinyin" (mảng 3 chuỗi), "correct_option_pinyin").`, schema: { type: "OBJECT", properties: { reading_passage_hanzi: { type: "STRING" }, reading_passage_pinyin: { type: "STRING" }, questions: { type: "ARRAY", items: { type: "OBJECT", properties: { id: { type: "NUMBER" }, question_text_vietnamese: { type: "STRING" }, options_pinyin: { type: "ARRAY", items: { type: "STRING" } }, correct_option_pinyin: { type: "STRING" } }, required: ["id", "question_text_vietnamese", "options_pinyin", "correct_option_pinyin"] } } }, required: ["reading_passage_hanzi", "reading_passage_pinyin", "questions"] } }),
             listening: (input) => ({ prompt: `Tạo kịch bản nghe tiếng Trung (khoảng 80 chữ Hán) về chủ đề "${input}". Dịch kịch bản sang tiếng Việt. Tạo 3 câu hỏi trắc nghiệm bằng Tiếng Việt dựa trên nội dung. Mỗi câu có 3 lựa chọn bằng Pinyin. Trả về JSON: "audio_script_hanzi", "audio_script_pinyin", "audio_script_translation", "questions" (mảng, mỗi đối tượng chứa: "id", "question_text_vietnamese", "options_pinyin", "correct_option_pinyin").`, schema: { type: "OBJECT", properties: { audio_script_hanzi: { type: "STRING" }, audio_script_pinyin: { type: "STRING" }, audio_script_translation: { type: "STRING" }, questions: { type: "ARRAY", items: { type: "OBJECT", properties: { id: { type: "NUMBER" }, question_text_vietnamese: { type: "STRING" }, options_pinyin: { type: "ARRAY", items: { type: "STRING" } }, correct_option_pinyin: { type: "STRING" } }, required: ["id", "question_text_vietnamese", "options_pinyin", "correct_option_pinyin"] } } }, required: ["audio_script_hanzi", "audio_script_pinyin", "audio_script_translation", "questions"] } }),
             speakingPractice: (input) => ({ prompt: `Dựa vào chủ đề hoặc câu tiếng Việt "${input}", hãy tạo một câu tiếng Việt tương đương hoặc liên quan để người dùng dịch và nói bằng tiếng Trung. Sau đó, cung cấp bản dịch tiếng Trung gợi ý cho câu đó. Trả về một đối tượng JSON với các khóa: "vietnamese_sentence", "hanzi_suggestion", và "pinyin_suggestion".`, schema: { type: "OBJECT", properties: { vietnamese_sentence: { type: "STRING" }, hanzi_suggestion: { type: "STRING" }, pinyin_suggestion: { type: "STRING" } }, required: ["vietnamese_sentence", "hanzi_suggestion", "pinyin_suggestion"] } }),
             pinyinPractice: (input) => ({ prompt: `Dựa vào chủ đề "${input}", hãy tạo một câu tiếng Việt đơn giản và cung cấp bản dịch tiếng Trung của nó. Trả về một đối tượng JSON với các khóa: "vietnamese_sentence", "hanzi_suggestion", "pinyin_suggestion".`, schema: { type: "OBJECT", properties: { vietnamese_sentence: { type: "STRING" }, hanzi_suggestion: { type: "STRING" }, pinyin_suggestion: { type: "STRING" } }, required: ["vietnamese_sentence", "hanzi_suggestion", "pinyin_suggestion"] } }),
-            checkPinyin: (vietnameseSentence, userPinyin, correctPinyin) => ({ prompt: `Câu gốc tiếng Việt là: "${vietnameseSentence}". Người dùng đã gõ pinyin là: "${userPinyin}". Pinyin đúng gợi ý là: "${correctPinyin}". Hãy kiểm tra xem pinyin người dùng gõ có đúng không (cho phép cả pinyin có dấu và không dấu dạng số). Nếu sai, hãy đưa ra phản hồi ngắn gọn bằng tiếng Việt. Trả về JSON có khóa: "is_correct" (boolean), "corrected_pinyin" (chuỗi pinyin đúng), "feedback" (chuỗi nhận xét).`, schema: { type: "OBJECT", properties: { is_correct: {type: "BOOLEAN"}, corrected_pinyin: { type: "STRING" }, feedback: { type: "STRING" } }, required: ["is_correct", "corrected_pinyin", "feedback"] } }),
+            checkPinyin: (vietnameseSentence, userPinyin, correctPinyin) => ({ prompt: `Câu gốc tiếng Việt là: "${vietnameseSentence}". Người dùng đã gõ pinyin là: "${userPinyin}". Pinyin đúng gợi ý là: "${correctPinyin}". Hãy kiểm tra xem pinyin người dùng gõ có đúng không (cho phép cả pinyin có dấu và không dấu dạng số). Nếu sai, hãy đưa ra phản hồi ngắn gọn bằng tiếng Việt. Trả về JSON có khóa: "is_correct" (boolean), "corrected_pinyin" (chuỗi pinyin đúng), "feedback" (chuỗi nhận xét).`, schema: { type: "OBJECT", properties: { is_correct: { type: "BOOLEAN" }, corrected_pinyin: { type: "STRING" }, feedback: { type: "STRING" } }, required: ["is_correct", "corrected_pinyin", "feedback"] } }),
             comparison: (input) => ({ prompt: `So sánh các từ Pinyin sau: "${input}". Đối với mỗi từ, giải thích sắc thái ý nghĩa khác nhau và ngữ cảnh sử dụng khác nhau của từng từ, cách dùng bằng tiếng Việt, kèm theo một câu ví dụ (cả Hán tự, pinyin và bản dịch tiếng Việt). Trả về mảng JSON, mỗi đối tượng có khóa: "pinyin", "explanation", "example_hanzi", "example_pinyin", "example_vietnamese".`, schema: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { type: "STRING" }, explanation: { type: "STRING" }, example_hanzi: { type: "STRING" }, example_pinyin: { type: "STRING" }, example_vietnamese: { type: "STRING" } }, required: ["pinyin", "explanation", "example_hanzi", "example_pinyin", "example_vietnamese"] } } }),
             toneAnalysis: (input) => ({ prompt: `Phân tích thanh điệu của câu Pinyin sau: "${input}". Cung cấp giải thích chung bằng tiếng Việt. Sau đó, liệt kê chi tiết từng âm tiết với số thanh điệu, ký hiệu và mô tả. Trả về JSON có khóa: "original_pinyin", "explanation", "tones" (mảng các đối tượng có "syllable", "tone_number", "mark", "description").`, schema: { type: "OBJECT", properties: { original_pinyin: { type: "STRING" }, explanation: { type: "STRING" }, tones: { type: "ARRAY", items: { type: "OBJECT", properties: { syllable: { type: "STRING" }, tone_number: { type: "NUMBER" }, mark: { type: "STRING" }, description: { type: "STRING" } } } } }, required: ["original_pinyin", "explanation", "tones"] } }),
             situationalSentences: (input) => ({ prompt: `Tạo 3 câu tiếng Trung hữu ích cho tình huống: "${input}". Với mỗi câu, cung cấp chữ Hán, pinyin và bản dịch tiếng Việt. Trả về JSON có khóa 'situation' và 'sentences' (mảng đối tượng có 'hanzi', 'pinyin', 'vietnamese').`, schema: { type: "OBJECT", properties: { situation: { type: "STRING" }, sentences: { type: "ARRAY", items: { type: "OBJECT", properties: { hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["hanzi", "pinyin", "vietnamese"] } } }, required: ["situation", "sentences"] } }),
-            translateViToZh: (input) => ({ 
-                prompt: `Dịch câu tiếng Việt sau đây sang tiếng Trung: "${input}". Cung cấp 3-5 phương án dịch khác nhau. Với mỗi phương án, hãy cung cấp: 1. Chữ Hán (hanzi). 2. Pinyin có dấu. 3. Trạng thái phổ biến BẰNG TIẾNG VIỆT (ví dụ: "Rất phổ biến", "Tự nhiên", "Hơi trang trọng", "Ít dùng"). 4. Một ghi chú ngắn về ngữ cảnh sử dụng BẰNG TIẾNG VIỆT. Trả về một mảng JSON các đối tượng có khóa: "hanzi", "pinyin", "popularity_status", "usage_note".`, 
-                schema: { type: "ARRAY", items: { type: "OBJECT", properties: { hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, popularity_status: { type: "STRING" }, usage_note: { type: "STRING" } }, required: ["hanzi", "pinyin", "popularity_status", "usage_note"] } } 
+            translateViToZh: (input) => ({
+                prompt: `Dịch câu tiếng Việt sau đây sang tiếng Trung: "${input}". Cung cấp 3-5 phương án dịch khác nhau. Với mỗi phương án, hãy cung cấp: 1. Chữ Hán (hanzi). 2. Pinyin có dấu. 3. Trạng thái phổ biến BẰNG TIẾNG VIỆT (ví dụ: "Rất phổ biến", "Tự nhiên", "Hơi trang trọng", "Ít dùng"). 4. Một ghi chú ngắn về ngữ cảnh sử dụng BẰNG TIẾNG VIỆT. Trả về một mảng JSON các đối tượng có khóa: "hanzi", "pinyin", "popularity_status", "usage_note".`,
+                schema: { type: "ARRAY", items: { type: "OBJECT", properties: { hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, popularity_status: { type: "STRING" }, usage_note: { type: "STRING" } }, required: ["hanzi", "pinyin", "popularity_status", "usage_note"] } }
             }),
             conversationTurn: (conversationContext, latestMessage) => ({ prompt: `Đây là một cuộc hội thoại giữa AI 'Linh' và người học tiếng Trung. Bối cảnh: ${conversationContext}. Tin nhắn gần nhất của người dùng (bằng pinyin): ${latestMessage}. Hãy đóng vai Linh và phản hồi một cách tự nhiên bằng tiếng Trung. Trả về JSON có khóa "hanzi", "pinyin", và "vietnamese".`, schema: { type: "OBJECT", properties: { hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["hanzi", "pinyin", "vietnamese"] } }),
             conversationCorrection: (pinyinSentence) => ({ prompt: `Phân tích câu pinyin sau: "${pinyinSentence}". Sửa lại nếu cần và giải thích lỗi bằng tiếng Việt. Cung cấp pinyin đã sửa, ghi chú và bản dịch. Nếu đúng, xác nhận là đúng. Trả về JSON với khóa "originalPinyin", "correctedPinyin", "isCorrect", "correctionNotes", "vietnameseTranslation".`, schema: { type: "OBJECT", properties: { originalPinyin: { type: "STRING" }, correctedPinyin: { type: "STRING" }, isCorrect: { type: "BOOLEAN" }, correctionNotes: { type: "STRING" }, vietnameseTranslation: { type: "STRING" } }, required: ["originalPinyin", "correctedPinyin", "isCorrect", "correctionNotes", "vietnameseTranslation"] } }),
         };
-        
+
         // --- Function Triggers ---
         function generateExamples() { handleFeature('example', 'Tạo ví dụ', prompts.examples, renderers.examples); }
         function generateExercise() { handleFeature('exercise', 'Tạo Bài Tập Viết', prompts.exercise, renderers.exercise); }
@@ -1354,7 +2377,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
         function analyzeTones() { handleFeature('toneAnalysis', 'Phân Tích Thanh Điệu', prompts.toneAnalysis, renderers.toneAnalysis); }
         function startConversationSimulator() { handleFeature('conversationSimulator', 'Mô phỏng Hội thoại', null, renderers.conversationSimulator); }
         function generateSituationalSentences() { handleFeature('situationalSentences', 'Tạo câu theo Tình huống', prompts.situationalSentences, renderers.situationalSentences); }
-        
+
         function startSpeakingPracticeManual() {
             const modal = document.getElementById('manualSpeakingModal');
             modal.style.display = 'flex';
@@ -1366,7 +2389,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                     return;
                 }
                 modal.style.display = 'none';
-                handleFeature('speakingPracticeManual', 'Luyện phản xạ thủ công', null, 
+                handleFeature('speakingPracticeManual', 'Luyện phản xạ thủ công', null,
                     (input, content, headerText) => renderers.speakingPracticeManual(sentences, content, headerText),
                     (input) => input.length > 0
                 );
@@ -1381,11 +2404,11 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             const feedback = item.querySelector('.exercise-feedback');
             const options = item.querySelectorAll('.option-btn');
             const hanziSentence = item.dataset.hanzi;
-            
+
             options.forEach(btn => btn.disabled = true);
-            
-            const speakButtonHTML = hanziSentence 
-                ? `<button class="icon-btn" onclick="speakText('${hanziSentence.replace(/'/g, "\\'")}')" title="Nghe lại"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-1.414 1.414A6.472 6.472 0 0 1 12.026 8c0 1.966-.893 3.738-2.29 4.949l1.414 1.414z"/></svg></button>` 
+
+            const speakButtonHTML = hanziSentence
+                ? `<button class="icon-btn" onclick="speakText('${hanziSentence.replace(/'/g, "\\'")}')" title="Nghe lại"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-1.414 1.414A6.472 6.472 0 0 1 12.026 8c0 1.966-.893 3.738-2.29 4.949l1.414 1.414z"/></svg></button>`
                 : '';
 
             if (button.dataset.value === correctWord) {
@@ -1395,7 +2418,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                 button.classList.add('incorrect');
                 feedback.innerHTML = `Sai rồi. Đáp án đúng là "<b class="font-mono">${correctWord}</b>". ${speakButtonHTML}`;
                 const correctButton = item.querySelector(`button[data-value="${correctWord.replace(/"/g, '&quot;')}"]`);
-                if(correctButton) correctButton.classList.add('correct');
+                if (correctButton) correctButton.classList.add('correct');
             }
         }
 
@@ -1417,7 +2440,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                 feedbackEl.innerHTML = `Sai rồi. Đáp án đúng là: "<b class="font-mono">${correctAnswer}</b>" <br><span class="question-translation">(Câu hỏi: ${questionTranslation})</span>`;
             }
         }
-        
+
         // --- Audio Player & Speech Recognition Logic ---
         function createChineseUtterance(textInHanzi, { showError = true } = {}) {
             const utterance = new SpeechSynthesisUtterance(textInHanzi);
@@ -1450,11 +2473,11 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
         }
 
         function playQuestionAudio(button, textInHanzi) {
-             if (!('speechSynthesis' in window)) return;
-             if (speechSynthesis.speaking) speechSynthesis.cancel();
-             const utterance = createChineseUtterance(textInHanzi);
-             if (!utterance) return;
-            
+            if (!('speechSynthesis' in window)) return;
+            if (speechSynthesis.speaking) speechSynthesis.cancel();
+            const utterance = createChineseUtterance(textInHanzi);
+            if (!utterance) return;
+
             const originalIconSVG = button.innerHTML;
             button.innerHTML = `<div class="spinning-loader"></div>`;
             button.disabled = true;
@@ -1522,7 +2545,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             loopPlaybackState.text = '';
             loopPlaybackState.button = null;
         }
-        
+
         function setupAudioPlayer(scriptInHanzi, container) {
             container.innerHTML = `<div class="audio-player"><div class="audio-controls"><button id="audioPlayBtn" class="audio-btn" title="Phát"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M10.804 8 5 4.633v6.734L10.804 8zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm15 0a7 7 0 1 0-14 0 7 7 0 0 0 14 0z"/></svg></button><button id="audioPauseBtn" class="audio-btn" title="Tạm dừng" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm15 0a7 7 0 1 0-14 0 7 7 0 0 0 14 0z"/></svg></button><button id="audioStopBtn" class="audio-btn" title="Dừng"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v4a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 0 1H6.5a.5.5 0 0 1 0-1H10.5zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm15 0a7 7 0 1 0-14 0 7 7 0 0 0 14 0z"/></svg></button></div><div id="audioStatus" class="audio-status">Sẵn sàng</div></div>`;
             const playBtn = document.getElementById('audioPlayBtn'), pauseBtn = document.getElementById('audioPauseBtn'), stopBtn = document.getElementById('audioStopBtn'), statusDiv = document.getElementById('audioStatus');
@@ -1531,7 +2554,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             let utterance = new SpeechSynthesisUtterance(scriptInHanzi);
             const setVoice = () => {
                 const voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('zh'));
-                if (voices.length > 0) { utterance.voice = voices.find(v => v.name.includes('Google') && v.lang === 'zh-CN') || voices.find(v => v.lang === 'zh-CN') || voices[0]; utterance.lang = 'zh-CN';}
+                if (voices.length > 0) { utterance.voice = voices.find(v => v.name.includes('Google') && v.lang === 'zh-CN') || voices.find(v => v.lang === 'zh-CN') || voices[0]; utterance.lang = 'zh-CN'; }
             };
             setVoice();
             if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = setVoice;
@@ -1546,7 +2569,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             pauseBtn.addEventListener('click', () => { if (speechSynthesis.speaking) speechSynthesis.pause(); });
             stopBtn.addEventListener('click', () => { if (speechSynthesis.speaking || speechSynthesis.paused) speechSynthesis.cancel(); });
         }
-        
+
         async function handlePronunciationRecording(sentenceData) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
@@ -1562,18 +2585,18 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
 
             // Fetch suggestion if not already present
             if (!targetData.hanzi_suggestion) {
-                 scoreContainer.innerHTML = '<p class="text-center font-semibold">Đang lấy câu gợi ý...</p>';
-                 scoreContainer.classList.remove('hidden');
-                 try {
+                scoreContainer.innerHTML = '<p class="text-center font-semibold">Đang lấy câu gợi ý...</p>';
+                scoreContainer.classList.remove('hidden');
+                try {
                     const { prompt, schema } = prompts.speakingPractice(targetData.vietnamese_sentence);
                     targetData = await callGemini(prompt, schema);
-                    scoreContainer.classList.add('hidden'); 
-                    scoreContainer.innerHTML = ''; 
-                 } catch (error) {
+                    scoreContainer.classList.add('hidden');
+                    scoreContainer.innerHTML = '';
+                } catch (error) {
                     showMessage('Không thể lấy câu gợi ý để chấm điểm.', 'error');
                     scoreContainer.classList.add('hidden');
                     return;
-                 }
+                }
             }
 
             recognition = new SpeechRecognition();
@@ -1601,9 +2624,9 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                     const spokenTextPinyin = pinyinResult.pinyin;
 
                     // Get score using original Hanzi for accuracy
-                    const {prompt: scorePrompt, schema: scoreSchema} = prompts.pronunciationScore(targetData.hanzi_suggestion, spokenTextHanzi);
+                    const { prompt: scorePrompt, schema: scoreSchema } = prompts.pronunciationScore(targetData.hanzi_suggestion, spokenTextHanzi);
                     const result = await callGemini(scorePrompt, scoreSchema);
-                    
+
                     // Display result with Pinyin
                     scoreContainer.innerHTML = `
                         <div class="pronunciation-score-card">
@@ -1633,30 +2656,30 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
 
         function playFullDialogue(hanziLines) {
             if (!('speechSynthesis' in window)) return;
-            if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel(); 
+            if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
 
             isSpeakingFullDialogue = true;
-            currentUtteranceQueue = [...hanziLines]; 
+            currentUtteranceQueue = [...hanziLines];
             if (isRecording) { if (recognition) recognition.stop(); }
 
             const speakNextLine = () => {
                 if (currentUtteranceQueue.length > 0 && isSpeakingFullDialogue) {
                     const line = currentUtteranceQueue.shift();
                     const utterance = new SpeechSynthesisUtterance(line);
-                     const voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('zh'));
-                     if (voices.length > 0) {
+                    const voices = speechSynthesis.getVoices().filter(voice => voice.lang.startsWith('zh'));
+                    if (voices.length > 0) {
                         utterance.voice = voices.find(v => v.name.includes('Google') && v.lang === 'zh-CN') || voices[0];
                         utterance.lang = 'zh-CN';
                         utterance.rate = 0.9;
-                     }
-                    utterance.onend = () => speakNextLine(); 
+                    }
+                    utterance.onend = () => speakNextLine();
                     utterance.onerror = (e) => { console.error(e); speakNextLine(); };
                     speechSynthesis.speak(utterance);
                 } else {
-                    isSpeakingFullDialogue = false; 
+                    isSpeakingFullDialogue = false;
                 }
             };
-            speakNextLine(); 
+            speakNextLine();
         }
 
         // --- Conversation Simulator Logic ---
@@ -1668,7 +2691,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                 const lastUserMessage = conversationHistory.length > 1 ? conversationHistory[conversationHistory.length - 1].parts[0].text : "(bắt đầu)";
                 const { prompt, schema } = prompts.conversationTurn(context, lastUserMessage);
                 const aiResponse = await callGemini(prompt, schema);
-                
+
                 const modelResponse = { role: 'model', parts: [{ text: aiResponse.hanzi }] };
                 conversationHistory.push(modelResponse);
                 addMessageToUI(aiResponse.pinyin, aiResponse.vietnamese, 'ai', aiResponse.hanzi);
@@ -1705,16 +2728,16 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             const chatInput = document.getElementById('chatInput');
             const chatSendButton = document.getElementById('chatSendButton');
             if (!chatInput) return;
-            
+
             const userMessagePinyin = chatInput.value.trim();
             if (!userMessagePinyin) return;
 
             chatInput.disabled = true;
-            if(chatSendButton) chatSendButton.disabled = true;
+            if (chatSendButton) chatSendButton.disabled = true;
 
             const userTurn = { role: 'user', parts: [{ text: userMessagePinyin }] };
             conversationHistory.push(userTurn);
-            
+
             // We show the user's pinyin immediately, but we need Hanzi and translation for the bubble
             // We can show a temporary message and update it
             addMessageToUI(userMessagePinyin, "Đang dịch...", 'user', '');
@@ -1737,7 +2760,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             } catch (error) {
                 console.error("Lỗi kiểm tra ngữ pháp:", error);
             }
-            
+
             chatInput.value = '';
             await getNextAiResponse();
         }
@@ -1763,9 +2786,9 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
                 showMessage('Vui lòng nhập từ hoặc cụm từ để tra cứu.', 'error');
                 return;
             }
-            hideAllSections(); 
+            hideAllSections();
             quickSearchResults.innerHTML = `<div class="info-card p-4 flex items-center justify-center"> <div class="loading-spinner"></div> <span class="ml-3 text-gray-600 dark:text-gray-300">Đang tra cứu...</span> </div>`;
-            
+
             try {
                 const { prompt, schema } = prompts.quickLookup(input);
                 const data = await callGemini(prompt, schema);
@@ -1791,7 +2814,7 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
             document.getElementById('btnGenerateListeningFillInTheBlank').addEventListener('click', generateListeningFillInTheBlank);
             document.getElementById('btnGenerateReadingAndQuestions').addEventListener('click', generateReadingAndQuestions);
             document.getElementById('btnGenerateListeningAndQuestions').addEventListener('click', generateListeningAndQuestions);
-            
+
             // Create
             document.getElementById('btnCorrectPinyin').addEventListener('click', correctPinyin);
             document.getElementById('btnGenerateDialogue').addEventListener('click', generateDialogue);
@@ -1825,9 +2848,5 @@ QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi
         }
     </script>
 </body>
+
 </html>
-
-
-
-
-
