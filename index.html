@@ -1652,7 +1652,7 @@
                     <div class="info-card">
                         <h3 class="card-title">💡 Mẹo để dễ nhớ</h3>
                         <ul class="list-disc list-inside space-y-2">
-                            ${data.memory_tips.map(tip => `<li class="text-slate-700 dark:text-white">${String(tip).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}
+                            ${data.memory_tips.map(tip => `<li class="text-slate-800 dark:text-slate-200">${String(tip).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`).join('')}
                         </ul>
                     </div>
                 ` : '';
@@ -1766,6 +1766,50 @@
                         </table>
                         </div>
                     </div>
+                    ${data.component_examples ? `
+                    <div class="info-card">
+                        <h3 class="card-title">📖 Ví dụ mở rộng theo từng chữ Hán</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 100px;">Thành phần</th>
+                                        <th style="width: 140px;">Ví dụ</th>
+                                        <th style="width: 180px;">Pinyin</th>
+                                        <th>Nghĩa tiếng Việt</th>
+                                        <th style="width: 60px;">Phát âm</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${Object.entries(data.component_examples).map(([char, examples]) => {
+                    return examples.map((ex, idx) => `
+                                            <tr class="${idx === 0 ? 'border-t-2 border-fuchsia-200 dark:border-fuchsia-800' : ''}">
+                                                ${idx === 0 ? `
+                                                    <td rowspan="${examples.length}" class="text-center font-bold text-2xl text-fuchsia-600 dark:text-fuchsia-400 bg-slate-50 dark:bg-slate-800/50 align-middle">
+                                                        <div class="flex flex-col items-center gap-2">
+                                                            <span>${char}</span>
+                                                            <button class="icon-btn" onclick="speakText('${char}')" title="Nghe ký tự này">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-1.414 1.414A6.472 6.472 0 0 1 12.026 8c0 1.966-.893 3.738-2.29 4.949l1.414 1.414z"/></svg>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                ` : ''}
+                                                <td class="font-bold text-lg text-slate-800 dark:text-slate-200">${idx + 1}. ${ex.hanzi}</td>
+                                                <td class="font-mono text-fuchsia-600 dark:text-fuchsia-400">${ex.pinyin}</td>
+                                                <td class="text-slate-700 dark:text-slate-300">${ex.meaning}</td>
+                                                <td class="text-center">
+                                                    <button class="icon-btn" onclick="speakText('${ex.hanzi}')" title="Nghe từ này">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-1.414 1.414A6.472 6.472 0 0 1 12.026 8c0 1.966-.893 3.738-2.29 4.949l1.414 1.414z"/></svg>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `).join('');
+                }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    ` : ''}
                     ${memoryTipsSection}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         ${synonymsSection}
@@ -2325,14 +2369,15 @@
 
 1. 'explanation': Giải thích chung bằng tiếng Việt (tối đa 2 câu), nếu người dùng nhập tiếng việt thì dịch sang tiếng trung và bao gồm cả piyin
 2. 'components': Mảng các đối tượng cho mỗi ký tự, mỗi đối tượng có 'pinyin', 'hanzi', và 'meaning' (nghĩa gốc)
-3. 'usage_notes': Lưu ý cách dùng bằng tiếng Việt (tối đa 2 câu)
-4. 'memory_tips': Mảng các mẹo để dễ nhớ bằng tiếng Việt (mỗi mẹo là một chuỗi ngắn gọn)
-5. 'synonyms': Mảng các từ đồng nghĩa (ít nhất 2-3 từ), mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
-6. 'antonyms': Mảng các từ trái nghĩa (ít nhất 1-2 từ nếu có, nếu không có từ trái nghĩa phù hợp thì trả về mảng rỗng []), mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
-7. 'collocations': Mảng các cụm từ phổ biến thường đi chung với từ này (ít nhất 3-5 cụm từ), sắp xếp theo độ phổ biến từ cao xuống thấp, mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
+3. 'component_examples': Một đối tượng chứa danh sách ví dụ cho từng ký tự trong components. Mỗi khóa là chữ Hán của ký tự đó, và giá trị là một mảng 5 đối tượng ví dụ. Mỗi ví dụ có: 'hanzi' (từ vựng ví dụ), 'pinyin' (pinyin có dấu), 'hanviet' (âm Hán Việt), 'meaning' (nghĩa tiếng Việt).
+4. 'usage_notes': Lưu ý cách dùng bằng tiếng Việt (tối đa 2 câu)
+5. 'memory_tips': Mảng các mẹo để dễ nhớ bằng tiếng Việt (mỗi mẹo là một chuỗi ngắn gọn)
+6. 'synonyms': Mảng các từ đồng nghĩa (ít nhất 2-3 từ), mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
+7. 'antonyms': Mảng các từ trái nghĩa (ít nhất 1-2 từ nếu có, nếu không có từ trái nghĩa phù hợp thì trả về mảng rỗng []), mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
+8. 'collocations': Mảng các cụm từ phổ biến thường đi chung với từ này (ít nhất 3-5 cụm từ), sắp xếp theo độ phổ biến từ cao xuống thấp, mỗi đối tượng có 'pinyin', 'hanzi', 'meaning' (nghĩa tiếng Việt), và 'rating' (số từ 1 đến 5)
 
 QUAN TRỌNG: Phải luôn trả về TẤT CẢ các khóa trên, kể cả khi một số mảng có thể rỗng. Giữ các chuỗi ngắn gọn và đảm bảo JSON hợp lệ.`,
-                schema: { type: "OBJECT", properties: { explanation: { "type": "STRING" }, components: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" } }, required: ["pinyin", "hanzi", "meaning"] } }, usage_notes: { "type": "STRING" }, memory_tips: { type: "ARRAY", items: { type: "STRING" } }, synonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, antonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, collocations: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } } }, required: ["explanation", "components", "usage_notes", "synonyms", "antonyms", "collocations", "memory_tips"] }
+                schema: { type: "OBJECT", properties: { explanation: { "type": "STRING" }, components: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" } }, required: ["pinyin", "hanzi", "meaning"] } }, component_examples: { type: "OBJECT" }, usage_notes: { "type": "STRING" }, memory_tips: { type: "ARRAY", items: { type: "STRING" } }, synonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, antonyms: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } }, collocations: { type: "ARRAY", items: { type: "OBJECT", properties: { pinyin: { "type": "STRING" }, hanzi: { "type": "STRING" }, meaning: { "type": "STRING" }, rating: { "type": "NUMBER" } }, required: ["pinyin", "hanzi", "meaning", "rating"] } } }, required: ["explanation", "components", "component_examples", "usage_notes", "synonyms", "antonyms", "collocations", "memory_tips"] }
             }),
             correction: (input) => ({ prompt: `Sửa lỗi câu Pinyin sau: "${input}". Hãy đoán chữ Hán tương ứng, kiểm tra ngữ pháp, sau đó cung cấp pinyin gốc, pinyin đã sửa, danh sách các thay đổi (giải thích bằng TIẾNG VIỆT), và bản dịch tiếng Việt của câu đã sửa. Trả về JSON với khóa: "original_pinyin", "corrected_pinyin", "changes" (mảng chuỗi), "translation".`, schema: { type: "OBJECT", properties: { original_pinyin: { type: "STRING" }, corrected_pinyin: { type: "STRING" }, changes: { type: "ARRAY", items: { type: "STRING" } }, translation: { type: "STRING" } }, required: ["original_pinyin", "corrected_pinyin", "changes", "translation"] } }),
             dialogue: (input) => ({ prompt: `Tạo đoạn hội thoại tiếng Trung về chủ đề "${input}" giữa hai nhân vật (ví dụ: A và B). Cung cấp tên nhân vật, lời thoại chữ Hán, pinyin và bản dịch tiếng Việt cho mỗi dòng. Trả về JSON có khóa: "characters" (mảng 2 tên), "dialogue" (mảng các đối tượng có khóa "character", "hanzi", "pinyin", "vietnamese").`, schema: { type: "OBJECT", properties: { characters: { type: "ARRAY", items: { type: "STRING" } }, dialogue: { type: "ARRAY", items: { type: "OBJECT", properties: { character: { type: "STRING" }, hanzi: { type: "STRING" }, pinyin: { type: "STRING" }, vietnamese: { type: "STRING" } }, required: ["character", "hanzi", "pinyin", "vietnamese"] } } }, required: ["characters", "dialogue"] } }),
